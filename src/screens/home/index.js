@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 // import { connect } from 'react-redux'
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
     Text,
-    useColorScheme,
     View,
   } from 'react-native';
-
+import { buttonComponent } from '../../components/button'; 
 export class Home extends Component {
   render() {
     return (
         <View>
             <Text>Home</Text>
+            {buttonComponent(
+                false,
+                "Home",
+                () => { console.log("Home")}
+            )}
         </View>
     )
   }

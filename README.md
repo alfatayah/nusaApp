@@ -9,7 +9,7 @@ Made from react native and redux sagas
 ## Getting Started
 
 ### Dependencies
-* Latest presequites of react native 
+* Latest prerequisites of react native 
 
 ### Executing program
 * How to run the program
@@ -28,11 +28,5 @@ Made from react native and redux sagas
     ```
 
 ## Authors
-ex. fadhil
 ex. [@alfatayah_](https://twitter.com/alfatayah_)
-
-
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
 

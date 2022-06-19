@@ -10,13 +10,20 @@
  
  import { AppStack } from './navigations/AppNavigator';
  import { NavigationContainer } from '@react-navigation/native';
- 
+ import { NativeBaseProvider } from 'native-base';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+
  export default function App() {
  
    return (
-    <NavigationContainer>
-     <AppStack />
-    </NavigationContainer>
+     <Provider store={store} >
+      <NativeBaseProvider>
+         <NavigationContainer>
+           <AppStack />
+         </NavigationContainer>
+         </NativeBaseProvider>
+      </Provider>
    );
  };
  

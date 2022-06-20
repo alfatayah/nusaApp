@@ -13,8 +13,8 @@ import Home from '../screens/home';
 
 export function AppStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
-      <Stack.Screen name="Home" component={Home} />
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">
+      <Stack.Screen name="Home" component={Login} />
       <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   );

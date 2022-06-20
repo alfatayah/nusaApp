@@ -9,10 +9,15 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from 'react-native';
-import { renderField } from '../../components/renderField';
+// import { renderField } from '../../components/renderField';
+import { Container , Input, Icon, FormControl} from 'native-base';
 import { buttonComponent } from '../../components/button'; 
 import {login} from '../../actions'
+import ILcamera from '../../assets/camera.png'
+import {RFValue} from '../../utils/utilization'
+import {fonts} from  '../../utils/fonts'
 export class Login extends Component {
   componentDidUpdate = async prevProps => {
     const {loginResult, loginError} = this.props;
@@ -35,13 +40,39 @@ export class Login extends Component {
 
   render() {
     return (
-      <View>
-        <Text>hello</Text>
-        {buttonComponent(false, 'Login', () => this.userlogin())}
+      <View style={{flex: 1}}>
+       <View style={{backgroundColor: '#225D92', }}>
+        <View style={{alignItems: 'center', marginTop: 20}}>
+          <Image source={ILcamera} />
+          <Text
+            style={{fontSize: RFValue(18), fontFamily: fonts.primary.bold}}>
+            Nusa
+            <Text style={{color: 'white'}}>Kamera</Text>
+          </Text>
+        </View>
       </View>
+      <View style={{backgroundColor: 'white',alignItems: 'center'  }}>
+        <Text>Welcome</Text>
+        <Text>Yuk, login untuk cari keperluan camera disini! </Text>
+        
+        <FormControl.Label>Email</FormControl.Label>
+        <Input
+          style={{backgroundColor: 'white'}}
+          variant="outline"
+          placeholder="Email"
+        />
+        </View>
+      </View>
+
+   
+
+      
+      
     );
   }
 }
+
+
 
 const mapStateToProps = (state) => ({
     loginResult: state.login.result,
@@ -59,5 +90,13 @@ function matchDispatchToProps(dispatch) {
     dispatch,
   );
 }
+
+Login = reduxForm({
+  form: 'formLogin',
+  destroyOnUnmount: false, // <------ preserve form data
+  forceUnregisterOnUnmount: true,
+  enableReinitialize: true,
+    // validate: FormFdeSyanaValidate,
+})(Login);
 
 export default connect(mapStateToProps, matchDispatchToProps)(Login)

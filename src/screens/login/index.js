@@ -99,7 +99,7 @@ export class Login extends Component {
             Yuk, login untuk cari keperluan camera disini!{' '}
           </Text>
           {/* <FormControl isRequired > */}
-          <Field name={'email'} label={"name"} component={renderInput}  />
+          <Field name={'email'} label={"email"} component={renderInput}  />
           {/* </FormControl > */}
           {/* <FormControl.Label style={{alignSelf: 'flex-start'}}>
             Passsword

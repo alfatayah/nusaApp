@@ -12,12 +12,13 @@ import {
   Image,
 } from 'react-native';
 // import { renderField } from '../../components/renderField';
-import { Container , Input, FormControl,Icon } from 'native-base';
-import { buttonComponent , renderInput} from '../../components/index'; 
+import { Container , Input, FormControl,Icon , Center, NativeBaseProvider} from 'native-base';
+import { buttonComponent , Loading, renderInput,} from '../../components/index'; 
 import {login} from '../../actions'
 import ILcamera from '../../assets/camera.png'
 import {RFValue} from '../../utils/utilization'
 import {fonts} from  '../../utils/fonts'
+import {BG_COLOR} from '../../utils/constant'
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FormValidation } from '../../utils/FormValidation';
@@ -58,8 +59,8 @@ export class Login extends Component {
     const {show} = this.state;
     const {handleSubmit}  = this.props;
     return (
-      <View style={{flex: 1, backgroundColor: '#225D92'}}>
-        <View style={{height: '45%'}}>
+      <View style={{flex: 1, backgroundColor: BG_COLOR}}>
+        <View style={{height: '35%'}}>
           <View style={{alignItems: 'center', marginTop: 20}}>
             <Image source={ILcamera} />
             <Text
@@ -86,7 +87,7 @@ export class Login extends Component {
               fontFamily: fonts.primary.bold,
               fontSize: RFValue(30),
               color: '#12497A',
-              marginTop: 10,
+              marginTop: 20,
             }}>
             Welcome
           </Text>
@@ -95,30 +96,42 @@ export class Login extends Component {
               color: 'grey',
               fontFamily: fonts.primary.normal,
               fontSize: RFValue(14),
+              marginTop: 8,
             }}>
             Yuk, login untuk cari keperluan camera disini!{' '}
           </Text>
-          {/* <FormControl isRequired > */}
-          <Field name={'email'} label={"email"} component={renderInput}  />
-          {/* </FormControl > */}
-          {/* <FormControl.Label style={{alignSelf: 'flex-start'}}>
-            Passsword
-          </FormControl.Label>
-          <Input
-            type={show ? 'text' : 'password'}
-            InputRightElement={
-              <Icon
-                as={<Ionicons name={show ? 'eye' : 'eye-off'} />}
-                size={5}
-                mr="2"
-                color="muted.400"
-                onPress={() => this.setState({show: !show})}
+          <View style={{width: '85%'}}>
+              <Field
+                name={'email'}
+                typeInput={'text'}
+                label={'Email'}
+                placeholder={'Email'}
+                component={renderInput}
               />
-            }
-            placeholder="Password"
-          /> */}
-          <View style={{marginBottom: 10}} />
-          {buttonComponent(null, 'LOGIN',handleSubmit( this.submitLogin))}
+              <Field
+                name={'password'}
+                typeInput={'password'}
+                label={'Password'}
+                placeholder={'Password'}
+                show={this.state.show}
+                onPressIcon={() => this.setState({show: !show})}
+                component={renderInput}
+              />
+
+            {buttonComponent(null, 'LOGIN', handleSubmit(this.submitLogin))}
+            <Text
+              style={{
+                color: '#13497B',
+                fontFamily: fonts.primary.bold,
+                fontSize: RFValue(14),
+                marginTop: 15,
+                alignSelf: 'flex-end'
+              }}>
+              create new account
+            </Text>
+            <Loading />
+            <View style={{marginBottom: 10}} />
+          </View>
         </View>
       </View>
     );

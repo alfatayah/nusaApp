@@ -2,7 +2,7 @@
 export const BAF_COLOR_BLUE = '#002f5f';
 export const BAF_COLOR_YELLOW = '#F8AF34';
 export const BORDER_COLOR = '#A6AAB4';
-export const BG_COLOR = 'rgba(218, 218, 218, 0.5)';
+export const BG_COLOR = '#05B6D3';
 //NOTE: API nya masih local jadi nanti ketika pindah network api address nya harus di ganti
 export const API_NUSA = 'http://192.168.1.10:3000/api/v1/';
 

@@ -9,12 +9,15 @@ import {
 import { fonts } from '../../utils/fonts';
 import { getScaleIos, RFValue } from '../../utils/utilization';
 import { Container , Input, FormControl, Icon , WarningOutlineIcon} from 'native-base';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const renderInput = ({
     input, 
-    name,
+    typeInput,
+    show, 
     label,
+    placeholder,
+    onPressIcon,
     meta: { touched, error },
   }) => {
     var hasError = false;
@@ -22,24 +25,34 @@ export const renderInput = ({
       hasError = true;
     }
     return (
-        <View style={{width: 100}}>
+        <View style={{width: "100%", height: "24%"}}>
           <FormControl.Label style={{alignSelf: 'flex-start'}}>
             {label}
           </FormControl.Label>
           <Input
-           key={1}
             {...input}
+            type={show ? 'text' : 'password'}
             style={{backgroundColor: 'white'}}
             editable={ true}
             variant="outline"
             maxLength={10}
-            placeholder="Email"
+            placeholder={placeholder}
+            InputRightElement={
+              typeInput == "text" ? null : <Icon
+              as={<Ionicons name={show ? 'eye' : 'eye-off'} />}
+              size={5}
+              mr="2"
+              color="muted.400"
+              onPress={onPressIcon}
+            />
+             
+            }
           />
             {hasError ? <Text style={{
                    color: 'red',
                    alignSelf: 'flex-end',
                    fontFamily: fonts.primary.normal,
-                   fontSize:  RFValue(11),
+                   fontSize:  RFValue(12),
             }}>{error}</Text> : null}
           <View style={{marginBottom: 10}} />
 

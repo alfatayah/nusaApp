@@ -43,7 +43,7 @@ export class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: false,
+      iconEye: true,
       loading: true,
     };
   }
@@ -72,7 +72,7 @@ export class Login extends Component {
   };
 
   render() {
-    const {show} = this.state;
+    const {iconEye} = this.state;
     const {handleSubmit} = this.props;
     return (
       <ScrollView style={{flex: 1 , backgroundColor: BG_COLOR}}>
@@ -132,8 +132,8 @@ export class Login extends Component {
                 type={"password"}
                 label={'Password'}
                 placeholder={'Password'}
-                show={this.state.show}
-                onPressIcon={() => this.setState({show: !show})}
+                iconEye={iconEye}
+                onPressIcon={() => this.setState({iconEye: !iconEye})}
                 component={renderInput}
               />
               {buttonComponent(null, 'LOGIN', handleSubmit(this.submitLogin))}

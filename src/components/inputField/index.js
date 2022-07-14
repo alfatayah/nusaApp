@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 export const renderInput = ({
     input, 
     type,
-    show, 
+    iconEye, 
     label,
     placeholder,
     onPressIcon,
@@ -31,7 +31,7 @@ export const renderInput = ({
           </FormControl.Label>
           <Input
             {...input}
-            type={type}
+            type={  iconEye ? 'password' : 'text'}
             style={{backgroundColor: 'white'}}
             editable={ true}
             variant="outline"
@@ -39,7 +39,7 @@ export const renderInput = ({
             placeholder={placeholder}
             InputRightElement={
               type == "text" ? null : <Icon
-              as={<Ionicons name={show ? 'eye' : 'eye-off'} />}
+              as={<Ionicons name={iconEye ? 'eye' : 'eye-off'} />}
               size={5}
               mr="2"
               color="muted.400"

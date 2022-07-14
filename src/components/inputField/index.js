@@ -15,7 +15,6 @@ export const renderInput = ({
     input, 
     type,
     iconEye,
-
     label,
     placeholder,
     onPressIcon,

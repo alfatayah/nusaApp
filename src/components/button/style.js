@@ -11,7 +11,7 @@ export default StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: RFValue(5),
+    borderRadius: RFValue(10),
     paddingVertical: hp(2),
     backgroundColor: data ? 'rgba(52, 52, 52, 0.3)' : '#46D0D9',
     marginTop: 20,

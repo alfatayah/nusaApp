@@ -9,14 +9,13 @@ import {
 import { fonts } from '../../utils/fonts';
 import { getScaleIos, RFValue } from '../../utils/utilization';
 import { Spinner, HStack, Heading, Center, NativeBaseProvider } from "native-base";
+import styles from './style';
 
 export const Loading = (
-
   ) => {
     return (
-   <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+   <View style={styles.loadingStyle}>
          <ActivityIndicator animating={true} size="large" />
-      
    </View>
     )
   }

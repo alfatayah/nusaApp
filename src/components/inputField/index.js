@@ -14,7 +14,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 export const renderInput = ({
     input, 
     type,
-    iconEye, 
+    iconEye,
+
     label,
     placeholder,
     onPressIcon,
@@ -35,7 +36,6 @@ export const renderInput = ({
             style={{backgroundColor: 'white'}}
             editable={ true}
             variant="outline"
-            maxLength={10}
             placeholder={placeholder}
             InputRightElement={
               type == "text" ? null : <Icon

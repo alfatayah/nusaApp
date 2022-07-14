@@ -33,18 +33,12 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import ContentLoader, {
-  FacebookLoader,
-  InstagramLoader,
-  Bullets
-} from "react-native-easy-content-loader";
 
 export class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       iconEye: true,
-      loading: true,
     };
   }
 
@@ -52,7 +46,11 @@ export class Login extends Component {
     const {loginResult, loginError} = this.props;
 
     if (loginResult !== null && prevProps.loginResult !== loginResult) {
-      console.log('berhasil cuy ', loginResult);
+      setTimeout(() => {
+        this.setState({ loadingSpinner: false });
+        console.log('berhasil cuy ', loginResult);
+      }, 500);
+     
     }
 
     if (loginError !== null && prevProps.loginError !== loginError) {
@@ -60,29 +58,30 @@ export class Login extends Component {
     }
   };
 
-  userlogin = () => {
+  userlogin = (data) => {
+    this.setState({ loadingSpinner: true });
     this.props.login({
-      email: 'fadhil.alfatayah@gmail.com',
-      password: 'rahasia',
+      email: data.email,
+      password: data.password
     });
   };
 
   submitLogin = data => {
-    console.log('submit login', data);
+     this.userlogin(data)
   };
 
   render() {
     const {iconEye} = this.state;
-    const {handleSubmit} = this.props;
+    const {handleSubmit, loginLoading} = this.props;
     return (
-      <ScrollView style={{flex: 1 , backgroundColor: BG_COLOR}}>
+      <ScrollView style={{flex: 1, backgroundColor: BG_COLOR}}>
         <View style={{height: hp(40)}}>
           <View style={{alignItems: 'center', marginTop: 35}}>
             <Image source={ILcamera} />
             <Text
               style={{
                 fontSize: RFValue(30),
-                fontFamily: fonts.primary.extra_bold,
+                fontFamily: 'Roboto',
               }}>
               Nusa
               <Text style={{color: 'white', fontFamily: fonts.primary.normal}}>
@@ -91,10 +90,10 @@ export class Login extends Component {
             </Text>
           </View>
         </View>
-        
+
         <View
           style={{
-            height: hp(60), 
+            height: hp(60),
             backgroundColor: 'white',
             alignItems: 'center',
             borderTopLeftRadius: 50,
@@ -118,37 +117,43 @@ export class Login extends Component {
             }}>
             Yuk, login untuk cari keperluan camera disini!{' '}
           </Text>
-          <ContentLoader active   title={false} pRows={4} pWidth={["100%", 200, "25%", 45]} paragraphStyles={{alignSelf: 'center'}}  loading={false}>
-            <View style={{width: '85%', }}>
-              <Field
-                name={'email'}
-                type={'text'}
-                label={'Email'}
-                placeholder={'Email'}
-                component={renderInput}
-              />
-              <Field
-                name={'password'}
-                type={"password"}
-                label={'Password'}
-                placeholder={'Password'}
-                iconEye={iconEye}
-                onPressIcon={() => this.setState({iconEye: !iconEye})}
-                component={renderInput}
-              />
-              {buttonComponent(null, 'LOGIN', handleSubmit(this.submitLogin))}
-              <Text
-                style={{
-                  color: '#13497B',
-                  fontFamily: fonts.primary.bold,
-                  fontSize: RFValue(14),
-                  alignSelf: 'flex-end',
-                }}>
-                create new account
-              </Text>
-            </View>
-          </ContentLoader>
-
+          <View style={{width: '85%'}}>
+            <Field
+              name={'email'}
+              type={'text'}
+              label={'Email'}
+              placeholder={'Email'}
+              component={renderInput}
+            />
+            <Field
+              name={'password'}
+              type={'password'}
+              label={'Password'}
+              placeholder={'Password'}
+              iconEye={iconEye}
+              onPressIcon={() => this.setState({iconEye: !iconEye})}
+              component={renderInput}
+            />
+            {loginLoading ? (
+              <>
+                <View style={{marginTop: 30}}></View>
+                <Loading />
+              </>
+            ) : (
+              <>
+                {buttonComponent(null, 'LOGIN', handleSubmit(this.submitLogin))}
+                <Text
+                  style={{
+                    color: '#13497B',
+                    fontFamily: fonts.primary.bold,
+                    fontSize: RFValue(14),
+                    alignSelf: 'flex-end',
+                  }}>
+                  create new account
+                </Text>
+              </>
+            )}
+          </View>
         </View>
       </ScrollView>
     );
@@ -157,6 +162,7 @@ export class Login extends Component {
 
 const mapStateToProps = state => ({
   loginResult: state.login.result,
+  loginLoading: state.login.loading,
   loginError: state.login.error,
 });
 

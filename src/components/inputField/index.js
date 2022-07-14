@@ -13,7 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const renderInput = ({
     input, 
-    typeInput,
+    type,
     show, 
     label,
     placeholder,
@@ -25,20 +25,20 @@ export const renderInput = ({
       hasError = true;
     }
     return (
-        <View style={{width: "100%", height: "24%"}}>
+        <View style={{width: "100%", height: "24%", marginBottom: 10}}>
           <FormControl.Label style={{alignSelf: 'flex-start'}}>
             {label}
           </FormControl.Label>
           <Input
             {...input}
-            type={show ? 'text' : 'password'}
+            type={type}
             style={{backgroundColor: 'white'}}
             editable={ true}
             variant="outline"
             maxLength={10}
             placeholder={placeholder}
             InputRightElement={
-              typeInput == "text" ? null : <Icon
+              type == "text" ? null : <Icon
               as={<Ionicons name={show ? 'eye' : 'eye-off'} />}
               size={5}
               mr="2"

@@ -3,6 +3,7 @@ import {
   Platform,
   TouchableOpacity,
   View, 
+  ActivityIndicator,
   Text,
 } from 'react-native';
 import { fonts } from '../../utils/fonts';
@@ -14,10 +15,7 @@ export const Loading = (
   ) => {
     return (
    <View style={{justifyContent: 'center', flexDirection: 'row'}}>
-        <Spinner style={{marginRight: 5}} size="lg"  accessibilityLabel="Loading posts" />
-        <Heading color="primary.500" fontSize="md">
-        Loading
-      </Heading>
+         <ActivityIndicator animating={true} size="large" />
       
    </View>
     )

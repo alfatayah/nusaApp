@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { reduxForm, change, Field, Form } from 'redux-form';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {reduxForm, change, Field, Form} from 'redux-form';
 import {
   SafeAreaView,
   ScrollView,
@@ -10,27 +10,43 @@ import {
   Text,
   View,
   Image,
+  ActivityIndicator,
 } from 'react-native';
-// import { renderField } from '../../components/renderField';
-import { Container , Input, FormControl,Icon , Center, NativeBaseProvider} from 'native-base';
-import { buttonComponent , Loading, renderInput,} from '../../components/index'; 
-import {login} from '../../actions'
-import ILcamera from '../../assets/camera.png'
-import {RFValue} from '../../utils/utilization'
-import {fonts} from  '../../utils/fonts'
-import {BG_COLOR} from '../../utils/constant'
+import {
+  Container,
+  Input,
+  FormControl,
+  Icon,
+  Center,
+  NativeBaseProvider,
+} from 'native-base';
+import {buttonComponent, Loading, renderInput} from '../../components/index';
+import {login} from '../../actions';
+import ILcamera from '../../assets/camera.png';
+import {RFValue} from '../../utils/utilization';
+import {fonts} from '../../utils/fonts';
+import {BG_COLOR} from '../../utils/constant';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { FormValidation } from '../../utils/FormValidation';
+import {FormValidation} from '../../utils/FormValidation';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import ContentLoader, {
+  FacebookLoader,
+  InstagramLoader,
+  Bullets
+} from "react-native-easy-content-loader";
 
 export class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: true,
+      show: false,
+      loading: true,
     };
   }
-
 
   componentDidUpdate = async prevProps => {
     const {loginResult, loginError} = this.props;
@@ -51,17 +67,17 @@ export class Login extends Component {
     });
   };
 
-  submitLogin = (data) =>{
-    console.log("submit login", data)
-  }
+  submitLogin = data => {
+    console.log('submit login', data);
+  };
 
   render() {
     const {show} = this.state;
-    const {handleSubmit}  = this.props;
+    const {handleSubmit} = this.props;
     return (
-      <View style={{flex: 1, backgroundColor: BG_COLOR}}>
-        <View style={{height: '35%'}}>
-          <View style={{alignItems: 'center', marginTop: 20}}>
+      <ScrollView style={{flex: 1 , backgroundColor: BG_COLOR}}>
+        <View style={{height: hp(40)}}>
+          <View style={{alignItems: 'center', marginTop: 35}}>
             <Image source={ILcamera} />
             <Text
               style={{
@@ -75,8 +91,10 @@ export class Login extends Component {
             </Text>
           </View>
         </View>
+        
         <View
           style={{
+            height: hp(60), 
             backgroundColor: 'white',
             alignItems: 'center',
             borderTopLeftRadius: 50,
@@ -100,50 +118,47 @@ export class Login extends Component {
             }}>
             Yuk, login untuk cari keperluan camera disini!{' '}
           </Text>
-          <View style={{width: '85%'}}>
+          <ContentLoader active   title={false} pRows={4} pWidth={["100%", 200, "25%", 45]} paragraphStyles={{alignSelf: 'center'}}  loading={false}>
+            <View style={{width: '85%', }}>
               <Field
                 name={'email'}
-                typeInput={'text'}
+                type={'text'}
                 label={'Email'}
                 placeholder={'Email'}
                 component={renderInput}
               />
               <Field
                 name={'password'}
-                typeInput={'password'}
+                type={"password"}
                 label={'Password'}
                 placeholder={'Password'}
                 show={this.state.show}
                 onPressIcon={() => this.setState({show: !show})}
                 component={renderInput}
               />
+              {buttonComponent(null, 'LOGIN', handleSubmit(this.submitLogin))}
+              <Text
+                style={{
+                  color: '#13497B',
+                  fontFamily: fonts.primary.bold,
+                  fontSize: RFValue(14),
+                  alignSelf: 'flex-end',
+                }}>
+                create new account
+              </Text>
+            </View>
+          </ContentLoader>
 
-            {buttonComponent(null, 'LOGIN', handleSubmit(this.submitLogin))}
-            <Text
-              style={{
-                color: '#13497B',
-                fontFamily: fonts.primary.bold,
-                fontSize: RFValue(14),
-                marginTop: 15,
-                alignSelf: 'flex-end'
-              }}>
-              create new account
-            </Text>
-            <Loading />
-            <View style={{marginBottom: 10}} />
-          </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
 
-
-
-const mapStateToProps = (state) => ({
-    loginResult: state.login.result,
-    loginError: state.login.error,
-})
+const mapStateToProps = state => ({
+  loginResult: state.login.result,
+  loginError: state.login.error,
+});
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
@@ -151,7 +166,7 @@ function matchDispatchToProps(dispatch) {
       login,
       updateField: (form, field, newValue) =>
         dispatch(change(form, field, newValue)),
-      resetForm: (form) => dispatch(reset(form)),
+      resetForm: form => dispatch(reset(form)),
     },
     dispatch,
   );
@@ -162,7 +177,7 @@ Login = reduxForm({
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true,
   enableReinitialize: true,
-    validate: FormValidation,
+  validate: FormValidation,
 })(Login);
 
-export default connect(mapStateToProps, matchDispatchToProps)(Login)
+export default connect(mapStateToProps, matchDispatchToProps)(Login);

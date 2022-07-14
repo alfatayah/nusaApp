@@ -13,8 +13,9 @@ export default StyleSheet.create({
     justifyContent: 'center',
     borderRadius: RFValue(5),
     paddingVertical: hp(2),
-    backgroundColor: data ? 'rgba(52, 52, 52, 0.3)' : ' rgba(19, 73, 123, 1)',
+    backgroundColor: data ? 'rgba(52, 52, 52, 0.3)' : '#46D0D9',
     marginTop: 20,
+    marginBottom: 10
   }),
 
   text: {

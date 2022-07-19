@@ -25,10 +25,10 @@ export const renderInput = ({
       hasError = true;
     }
     return (
-        <View style={{width: "100%", height: "24%", marginBottom: 10}}>
-          <FormControl.Label style={{alignSelf: 'flex-start'}}>
+        <View style={{width: "100%"}}>
+          <Text style={{fontFamily: fonts.rubik.medium, color: '#13497B',}}>
             {label}
-          </FormControl.Label>
+          </Text>
           <Input
             {...input}
             type={  iconEye ? 'password' : 'text'}

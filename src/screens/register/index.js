@@ -23,11 +23,10 @@ import {
 } from 'native-base';
 import {buttonComponent, Loading, renderInput} from '../../components/index';
 import {login} from '../../actions';
-import ILcamera from '../../assets/camera.png';
+import ILregister from '../../assets/icon_register.png';
 import {RFValue} from '../../utils/utilization';
 import {fonts} from '../../utils/fonts';
 import {BG_COLOR} from '../../utils/constant';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {FormValidation} from '../../utils/FormValidation';
 import {
@@ -35,7 +34,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-export class Login extends Component {
+export class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -63,9 +62,7 @@ export class Login extends Component {
      
     }
 
-    if (loginError !== null && prevProps.loginError !== loginError) {
-      console.log('loginError cuy ', loginError);
-    }
+
   };
 
   userlogin = (data) => {
@@ -87,7 +84,7 @@ export class Login extends Component {
       <ScrollView style={{flex: 1, backgroundColor: BG_COLOR}}>
         <View style={{height: hp(40)}}>
           <View style={{alignItems: 'center', marginTop: 35}}>
-            <Image source={ILcamera} />
+            <Image source={ILregister} />
             <Text
               style={{
                 fontSize: RFValue(30),
@@ -103,7 +100,7 @@ export class Login extends Component {
 
         <View
           style={{
-            height: hp(60),
+            // height: hp(60),
             backgroundColor: 'white',
             alignItems: 'center',
             borderTopLeftRadius: 50,
@@ -111,12 +108,12 @@ export class Login extends Component {
           }}>
           <Text
             style={{
-              fontFamily: fonts.primary.bold,
+              fontFamily: fonts.rubik.medium,
               fontSize: RFValue(30),
               color: '#12497A',
               marginTop: 20,
             }}>
-            Welcome
+            Register
           </Text>
           <Text
             style={{
@@ -125,26 +122,51 @@ export class Login extends Component {
               fontSize: RFValue(14),
               marginTop: 8,
             }}>
-            Yuk, login untuk cari keperluan camera disini!{' '}
+            Belum punya akun?, yuk registrasi dulu
           </Text>
-          <View style={{width: '85%'}}>
-          <View style={{marginTop: 10}}></View>
+          <ScrollView style={{width: '85%'}}>
             <Field
-              name={'email'}
+              name={'nama'}
               type={'text'}
-              label={'Email'}
-              placeholder={'Email'}
+              label={'Nama'}
+              placeholder={''}
               component={renderInput}
             />
+
+            <Field
+              name={'nik'}
+              type={'text'}
+              label={'NIK'}
+              placeholder={''}
+              component={renderInput}
+            />
+
+            <Field
+              name={'emailRegist'}
+              type={'text'}
+              label={'Email'}
+              placeholder={''}
+              component={renderInput}
+            />
+
+            <Field
+              name={'emailRegist'}
+              type={'text'}
+              label={'Email'}
+              placeholder={''}
+              component={renderInput}
+            />
+
             <Field
               name={'password'}
               type={'password'}
               label={'Password'}
-              placeholder={'Password'}
+              placeholder={''}
               iconEye={iconEye}
               onPressIcon={() => this.setState({iconEye: !iconEye})}
               component={renderInput}
             />
+      
             {loginLoading ? (
               <>
                 <View style={{marginTop: 30}}></View>
@@ -152,22 +174,10 @@ export class Login extends Component {
               </>
             ) : (
               <>
-                {buttonComponent(null, 'LOGIN', handleSubmit(this.submitLogin))}
-                <Text
-                  style={{
-                    color: '#13497B',
-                    fontFamily: fonts.primary.bold,
-                    fontSize: RFValue(14),
-                    alignSelf: 'flex-end',
-              
-                  }}
-                  onPress={() => this.props.navigation.navigate("Register")}
-                  >
-                  create new account
-                </Text>
+                {buttonComponent(null, 'REGISTER', handleSubmit(this.submitLogin))}
               </>
             )}
-          </View>
+          </ScrollView>
         </View>
       </ScrollView>
     );
@@ -175,15 +185,15 @@ export class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  loginResult: state.login.result,
-  loginLoading: state.login.loading,
-  loginError: state.login.error,
+//   loginResult: state.login.result,
+//   loginLoading: state.login.loading,
+//   loginError: state.login.error,
 });
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      login,
+    //   login,
       updateField: (form, field, newValue) =>
         dispatch(change(form, field, newValue)),
       resetForm: form => dispatch(reset(form)),
@@ -192,12 +202,12 @@ function matchDispatchToProps(dispatch) {
   );
 }
 
-Login = reduxForm({
-  form: 'formLogin',
+Register = reduxForm({
+  form: 'formRegister',
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true,
   enableReinitialize: true,
   validate: FormValidation,
-})(Login);
+})(Register);
 
-export default connect(mapStateToProps, matchDispatchToProps)(Login);
+export default connect(mapStateToProps, matchDispatchToProps)(Register);

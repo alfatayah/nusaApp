@@ -16,7 +16,6 @@ export const buttonComponent = (
     textStyle,
   ) => {
     return (
-      <>
         <TouchableOpacity
           disabled={disabled}
           onPress={onPress}
@@ -26,6 +25,5 @@ export const buttonComponent = (
             {label}
           </Text>
         </TouchableOpacity>
-      </>
     );
   };

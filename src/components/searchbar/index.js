@@ -14,7 +14,7 @@ import {
   } from 'native-base';
   import {Text, View, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-export const Searchbar = () => {
+export const searchBar = () => {
   return (
     <View style={{backgroundColor: "white", borderRadius: 50, marginTop: "5%"}} > 
       <Input

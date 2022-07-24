@@ -10,7 +10,6 @@ export async function filterFetch(url, options) {
   try {
     return await fetch(url, options)
       .then((res) => {
-        console.log("res " , res.status)
         if (res.status !== 401 && res.status !== 200 && res.status !== 404) {
           if (res.status == 503) {
             throw new Error(

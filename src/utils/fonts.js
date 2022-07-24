@@ -7,6 +7,7 @@ export const fonts = {
 
   rubik: {
     normal: "Rubik",
-    medium: "Rubik-Medium"
+    medium: "Rubik-Medium",
+    regular: "Regular"
   }
 };

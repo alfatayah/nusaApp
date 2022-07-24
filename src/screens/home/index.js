@@ -13,101 +13,113 @@ import {
   VStack,
   Box,
   Heading,
-  Divider
+  Divider,
+  HStack,
+  Pressable,
 } from 'native-base';
-import {buttonComponent, Searchbar, filter, card} from '../../components/index';
+import {buttonComponent, searchBar, Card} from '../../components/index';
+import FooterAndroid from '../../components/Footer';
 import {fonts} from '../../utils/fonts';
 import ILacc from '../../assets/account.png';
 import IChello from '../../assets/icon_hello.png';
 import IClogout from '../../assets/icon_logout.png';
-import Icamera from '../../assets/filter_camera.png';
-import ILensa from '../../assets/filter_lensa.png';
-import ILightning from '../../assets/filter_lightning.png';
-import Iacc from '../../assets/filter_acc.png';
+import Footer from '../../components/Footer';
+import Filter from '../../components/Filter';
 export class Home extends Component {
-  render() {
+ constructor(props) {
+  super()
+  this.state = {
+    selected: 0,
+    tabState: 'home',
+
+  }
+ }
+
+  tabRender = () => {
+    switch (this.state.tabState) {
+      case 'home':
+        return this.tabHome()
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  tabHome = () => {
     return (
       <ScrollView style={{backgroundColor: '#F8FBFF'}}>
-        <View
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: '10%',
+        }}>
+        <Text
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: '10%',
+            fontFamily: fonts.rubik.normal,
+            fontSize: 20,
+            marginLeft: '3%',
           }}>
-          <Text
-            style={{
-              fontFamily: fonts.rubik.normal,
-              fontSize: 20,
-              marginLeft: '3%',
-            }}>
-            Hello,{' '}
-            <Text style={{fontFamily: fonts.rubik.medium, color: '#143656'}}>
-              Fadhil{' '}
-            </Text>
-            <Image source={IChello} />
+          Hello,{' '}
+          <Text style={{fontFamily: fonts.rubik.medium, color: '#143656'}}>
+            Fadhil{' '}
           </Text>
-          <Popover
-            trigger={triggerProps => {
-              return (
-                <Button
-                  style={{
-                    height: 25,
-                    width: 25,
-                    backgroundColor: 'white',
-                    marginRight: '3%',
-                  }}
-                  {...triggerProps}>
-                  <Image style={{height: 25, width: 25}} source={ILacc} />
-                </Button>
-              );
-            }}>
-            <Popover.Content>
-              <View>
-                <Text onPress={() => console.log('IM logout')}>
-                  {' '}
-                  <Image source={IClogout} /> Logout{' '}
-                </Text>
-              </View>
-            </Popover.Content>
-          </Popover>
-        </View>
-        {Searchbar()}
-        {/* {buttonComponent(false, 'Home', () => {
-          console.log('Home');
-        })} */}
-        <View style={{flexDirection: 'row'}}>
-        {filter('CAMERA', 
-        Icamera,
-        () => {
-          console.log('Home');
-        })}
-        {filter('LENSA', 
-        ILensa,
-        () => {
-          console.log('Home');
-        })}
-        {filter('LIGHTING', 
-        ILightning,
-        () => {
-          console.log('Home');
-        })}
-        {filter('ACCESORIES', 
-        Iacc,
-        () => {
-          console.log('Home');
-        })}
-        </View>
-        {card()}
-        {card()}
+          <Image source={IChello} />
+        </Text>
+        <Popover
+          trigger={triggerProps => {
+            return (
+              <Button
+                style={{
+                  height: 25,
+                  width: 25,
+                  backgroundColor: 'white',
+                  marginRight: '3%',
+                }}
+                {...triggerProps}>
+                <Image style={{height: 25, width: 25}} source={ILacc} />
+              </Button>
+            );
+          }}>
+          <Popover.Content>
+            <View>
+              <Text onPress={() => console.log('IM logout')}>
+                {' '}
+                <Image source={IClogout} /> Logout{' '}
+              </Text>
+            </View>
+          </Popover.Content>
+        </Popover>
+      </View>
+      {searchBar()}
+      <View style={{flexDirection: 'row', marginTop: "3%"}}>
+      <Filter
+        filterCamera={() => console.log("im camera filter action ")}
+        filterLensa={() => console.log("im lensa filter action ")}
+        filterLightning={() => console.log("im lensa linghing action ")}
+        filterAcc={() => console.log("im acc filter action ")}
+      />
+      </View>
+      {Card()}
+      {Card()} 
+    </ScrollView>
+    )  
+  } 
 
+  
+  render() {
+    const{selected} = this.state;
+    return (
+      <>
+      {this.tabRender()}
+       <Footer
+      tabState={this.state.tabState}
+    />
+      </>
  
+     
 
-
-
-
-          
-   
-      </ScrollView>
     );
   }
 }

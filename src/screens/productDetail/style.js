@@ -7,20 +7,14 @@ import {
 } from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
-  buttonDefault: {
-    width: '100%',
+  buttonCustom: {
+    width: '35%',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: RFValue(10),
     paddingVertical: hp(2),
-    backgroundColor: '#46D0D9',
-    marginTop: 20,
+    backgroundColor:  '#46D0D9',
+    marginTop: 15,
     marginBottom: 10
-  },
-
-  text: {
-    fontSize: Platform.OS == 'ios' ? getScaleIos(18) : RFValue(18),
-    fontFamily: fonts.rubik.medium,
-    color: 'white',
   },
 });

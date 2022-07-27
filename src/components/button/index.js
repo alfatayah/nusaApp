@@ -8,18 +8,17 @@ import { fonts } from '../../utils/fonts';
 import { getScaleIos, RFValue } from '../../utils/utilization';
 import styles from './style';
 export const buttonComponent = (
-    data,
+    buttonStyle,
     label,
     onPress,
     disabled,
-    buttonStyle,
     textStyle,
   ) => {
     return (
         <TouchableOpacity
           disabled={disabled}
           onPress={onPress}
-          style={[styles.buttonDefault(data), buttonStyle]}>
+          style={[styles.buttonDefault, buttonStyle]}>
           <Text
             style={[styles.text, textStyle]}>
             {label}

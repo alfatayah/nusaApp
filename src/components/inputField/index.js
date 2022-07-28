@@ -18,6 +18,7 @@ export const renderInput = ({
     label,
     placeholder,
     onPressIcon,
+    keyboardType,
     meta: { touched, error },
   }) => {
     var hasError = false;
@@ -32,10 +33,11 @@ export const renderInput = ({
           <Input
             {...input}
             type={  iconEye ? 'password' : 'text'}
-            style={{backgroundColor: 'white'}}
+            style={{backgroundColor: 'white' , fontFamily: fonts.rubik.regular,fontSize: 13 }}
             editable={ true}
             variant="outline"
             placeholder={placeholder}
+            keyboardType={keyboardType}
             InputRightElement={
               type == "text" ? null : <Icon
               as={<Ionicons name={iconEye ? 'eye' : 'eye-off'} />}

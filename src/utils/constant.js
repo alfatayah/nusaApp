@@ -4,7 +4,7 @@ export const BAF_COLOR_YELLOW = '#F8AF34';
 export const BORDER_COLOR = '#A6AAB4';
 export const BG_COLOR = '#05B6D3';
 //NOTE: API nya masih local jadi nanti ketika pindah network api address nya harus di ganti
-export const API_NUSA = 'http://192.168.1.9:3000/api/v1/';
+export const API_NUSA = 'http://192.168.1.13:3000/api/v1/';
 
 export async function filterFetch(url, options) {
   try {
@@ -29,20 +29,21 @@ export async function filterFetch(url, options) {
         if (response == 401) {
           throw new Error(JSON.stringify(json));
         } else if (response == 404) {
-          throw new Error(`404: ${json.message}`);
+          throw new Error(json.message);
         } else if (response != 200) {
           throw new Error(json.message || 'Error API fetch data');
         }
         return json.result;
       });
   } catch (error) {
+    console.log("error " , error.message)
     const errorMessage = error.message;
     if (errorMessage == 'Network request failed') {
       throw new Error(
         `Maaf, terdapat masalah pada jaringan Anda. Silahkan coba kembali.`,
       );
     } else {
-      throw new Error(error.message);
+      throw new Error(error);
     }
   }
 }

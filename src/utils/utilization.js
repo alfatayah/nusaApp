@@ -68,6 +68,13 @@ export const getScaleIos = (value) => {
   }
 };
 
+export const regexEmail = (newValue) => {
+  var output = !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
+    newValue,
+  );
+  return output;
+};
+
 // export const hasLocationPermissionIOS = async () => {
 //   const openSetting = () => {
 //     Linking.openSettings().catch(() => {
@@ -352,12 +359,7 @@ export const getScaleIos = (value) => {
 //   return output;
 // };
 
-// export const regexEmail = (newValue) => {
-//   var output = !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
-//     newValue,
-//   );
-//   return output;
-// };
+
 
 // export const regexNumOnly = (newValue) => {
 //   var output = /[A-Za-z *+=_.,?^${/}<>&%():;'^~!@#`\\\\|"[\]\\\n\\\t\\\f\\\r\\\n\\\-\\]/g.test(

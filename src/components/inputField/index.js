@@ -33,7 +33,7 @@ export const renderInput = ({
           <Input
             {...input}
             type={  iconEye ? 'password' : 'text'}
-            style={{backgroundColor: 'white' , fontFamily: fonts.rubik.regular,fontSize: 13 }}
+            style={{backgroundColor: 'white' , fontFamily: fonts.primary.normal,fontSize: 13 }}
             editable={ true}
             variant="outline"
             placeholder={placeholder}

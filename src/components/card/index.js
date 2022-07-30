@@ -14,15 +14,10 @@ import {
     heightPercentageToDP as hp,
   } from 'react-native-responsive-screen';
 export const Card = (
-    label,
-    picture,
-    onPress,
-    disabled,
-    buttonStyle,
-    textStyle,
+   onPress
   ) => {
     return (
-     <TouchableOpacity style={{ marginTop: "5%", alignSelf: "center", width: "95%", height:hp(42), elevation: 3, backgroundColor: "white", borderRadius: 5 }}>
+     <TouchableOpacity onPress={onPress}  style={{ marginTop: "5%", alignSelf: "center", width: "95%", height:hp(42), elevation: 3, backgroundColor: "white", borderRadius: 5 }}>
       <Image style={{width:"99%", height: hp(30),  alignSelf: 'center'}} source={{uri: 'https://www.pondoklensa.com/files/photo/web/product/md/25e6b113514b4fc386da48f362f5730e3.jpg'}}/>
       <View style={{ marginTop: -10,height: hp(14),borderTopLeftRadius:20, borderTopRightRadius: 20, backgroundColor: 'white', borderRadius: 5, elevation: 3}}>
         {/* wrap TEXT */}

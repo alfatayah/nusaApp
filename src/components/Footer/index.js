@@ -24,8 +24,8 @@ export default class Footer extends Component {
   render() {
     const {
       tabHome,
-      tabPromo,
-      tabPesan,
+      tabBooking,
+      tabReport,
       tabProduk,
       tabAkun,
       tabState,
@@ -44,14 +44,14 @@ export default class Footer extends Component {
         "tab" : "booking",
         "iconActive": "cart",
         "iconInActive": "cart-outline",
-        "nav" : tabHome
+        "nav" : tabBooking
     },
     {
       "id":3,
       "tab" : "report",
       "iconActive": "reader",
       "iconInActive": "reader-outline",
-      "nav" : tabHome
+      "nav" : tabReport
   },
   ]
     return (

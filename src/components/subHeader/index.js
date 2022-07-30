@@ -17,6 +17,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {fonts} from '../../utils/fonts';
 export const subHeader = (
   title,
+  showBack,
+  goBack,
 ) => {
   return (
     <View
@@ -26,16 +28,19 @@ export const subHeader = (
         justifyContent: 'space-evenly',
         marginTop: '5%',
       }}>
-      <TouchableOpacity
-      onPress={() => console.log("go back")}
-      style={{marginLeft: "5%", backgroundColor: "", flex: 1}}>
-        <Icon
-          size="6"
-          color="black"
-          as={<MaterialIcons name="arrow-back-ios" />}
-        />
-      </TouchableOpacity>
-      <View style={{marginLeft: "-20%", flex: 1, backgroundColor: ""}}>
+      {showBack ? (
+        <TouchableOpacity
+          onPress={goBack}
+          style={{marginLeft: '5%', backgroundColor: '', flex: 1}}>
+          <Icon
+            size="6"
+            color="black"
+            as={<MaterialIcons name="arrow-back-ios" />}
+          />
+        </TouchableOpacity>
+      ) : null}
+
+      <View style={{marginLeft: '-20%', flex: 1, backgroundColor: ''}}>
         <Text
           style={{
             fontFamily: fonts.rubik.normal,

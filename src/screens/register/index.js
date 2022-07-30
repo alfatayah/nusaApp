@@ -22,7 +22,7 @@ import {
   NativeBaseProvider,
 } from 'native-base';
 import {buttonComponent, Loading, renderInput} from '../../components/index';
-import {login} from '../../actions';
+import {register} from '../../actions';
 import ILregister from '../../assets/icon_register.png';
 import {RFValue} from '../../utils/utilization';
 import {fonts} from '../../utils/fonts';
@@ -43,17 +43,17 @@ export class Register extends Component {
   }
 
   componentDidUpdate = async prevProps => {
-    const {loginResult, loginError} = this.props;
+    const {registerError, registerResult} = this.props;
 
-    if (loginResult !== null && prevProps.loginResult !== loginResult) {
-      console.log('loginResult ', loginResult);
+    if (registerResult !== null && prevProps.registerResult !== registerResult) {
+      console.log('registerResult ', registerResult);
       setTimeout(() => {
         this.setState({ loadingSpinner: false });
         Alert.alert(
           "",
-          loginResult.message,
+          registerResult.message,
           [
-            { text: "OK", onPress: () => console.log("OK Pressed") }
+            { text: "OK", onPress: () => this.props.navigation.navigate("Login") }
           ]
         );
 
@@ -62,24 +62,44 @@ export class Register extends Component {
      
     }
 
+    if (registerError !== null && prevProps.registerError !== registerError) {
+      setTimeout(() => {
+        this.setState({ loadingSpinner: false });
+        Alert.alert(
+          "",
+          registerError.message,
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ]
+        );
+
+        Alert
+      }, 500);
+    }
+    
 
   };
 
-  userlogin = (data) => {
+  userRegist = (data) => {
     this.setState({ loadingSpinner: true });
-    this.props.login({
-      email: data.email,
-      password: data.password
+    this.props.register({
+      name : data.nama,
+      nik : data.nik,
+      email : data.emailRegist,
+      no_hp: data.telpon,
+      password: data.passRegist,
+      address: data.address,
+      status: ""
     });
   };
 
-  submitLogin = data => {
-     this.userlogin(data)
+  submitRegister = data => {
+     this.userRegist(data)
   };
 
   render() {
     const {iconEye} = this.state;
-    const {handleSubmit, loginLoading} = this.props;
+    const {handleSubmit, registerLoading} = this.props;
     return (
       <ScrollView style={{flex: 1, backgroundColor: BG_COLOR}}>
         <View style={{height: hp(40)}}>
@@ -119,18 +139,19 @@ export class Register extends Component {
             style={{
               color: 'grey',
               fontFamily: fonts.primary.normal,
-              fontSize: RFValue(14),
+              fontSize: RFValue(15),
               marginTop: 8,
             }}>
             Belum punya akun?, yuk registrasi dulu
           </Text>
-          <ScrollView style={{width: '85%'}}>
+          <ScrollView style={{width: '85%' , marginTop: 10}}>
             <Field
               name={'nama'}
               type={'text'}
               label={'Nama'}
               placeholder={''}
               component={renderInput}
+              keyboardType={"default"}
             />
 
             <Field
@@ -139,6 +160,7 @@ export class Register extends Component {
               label={'NIK'}
               placeholder={''}
               component={renderInput}
+              keyboardType={"numeric"}
             />
 
             <Field
@@ -147,34 +169,47 @@ export class Register extends Component {
               label={'Email'}
               placeholder={''}
               component={renderInput}
+              keyboardType={"default"}
             />
 
             <Field
-              name={'emailRegist'}
+              name={'telpon'}
               type={'text'}
-              label={'Email'}
+              label={'Telpon'}
               placeholder={''}
               component={renderInput}
+              keyboardType={"numeric"}
             />
 
             <Field
-              name={'password'}
+              name={'passRegist'}
               type={'password'}
               label={'Password'}
               placeholder={''}
               iconEye={iconEye}
               onPressIcon={() => this.setState({iconEye: !iconEye})}
               component={renderInput}
+              keyboardType={"default"}
+            />
+
+
+           <Field
+              name={'address'}
+              type={'text'}
+              label={'Alamat'}
+              placeholder={''}
+              component={renderInput}
+              keyboardType={"default"}
             />
       
-            {loginLoading ? (
+            {registerLoading ? (
               <>
                 <View style={{marginTop: 30}}></View>
                 <Loading />
               </>
             ) : (
               <>
-                {buttonComponent(null, 'REGISTER', handleSubmit(this.submitLogin))}
+                {buttonComponent(null, 'REGISTER', handleSubmit(this.submitRegister))}
               </>
             )}
           </ScrollView>
@@ -185,15 +220,15 @@ export class Register extends Component {
 }
 
 const mapStateToProps = state => ({
-//   loginResult: state.login.result,
-//   loginLoading: state.login.loading,
-//   loginError: state.login.error,
+  registerResult: state.register.result,
+  registerLoading: state.register.loading,
+  registerError: state.register.error,
 });
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-    //   login,
+      register,
       updateField: (form, field, newValue) =>
         dispatch(change(form, field, newValue)),
       resetForm: form => dispatch(reset(form)),
@@ -204,7 +239,7 @@ function matchDispatchToProps(dispatch) {
 
 Register = reduxForm({
   form: 'formRegister',
-  destroyOnUnmount: false, // <------ preserve form data
+  destroyOnUnmount: true, // <------ preserve form data
   forceUnregisterOnUnmount: true,
   enableReinitialize: true,
   validate: FormValidation,

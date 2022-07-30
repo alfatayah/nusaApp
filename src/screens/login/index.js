@@ -11,7 +11,9 @@ import {
   View,
   Image,
   ActivityIndicator,
-  Alert
+  Alert,
+  TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import {
   Container,
@@ -27,6 +29,7 @@ import ILcamera from '../../assets/camera.png';
 import {RFValue} from '../../utils/utilization';
 import {fonts} from '../../utils/fonts';
 import {BG_COLOR} from '../../utils/constant';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {FormValidation} from '../../utils/FormValidation';
@@ -43,16 +46,48 @@ export class Login extends Component {
     };
   }
 
+  handleBackButton = () => {
+    if (this.props.navigation.isFocused()) {
+      BackHandler.exitApp();
+      return true;
+    }
+  };
+
+  componentDidMount = async () => {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    const userToken = await AsyncStorage.getItem('UserToken');
+    console.log("userToken", userToken);
+  }
+
   componentDidUpdate = async prevProps => {
     const {loginResult, loginError} = this.props;
 
     if (loginResult !== null && prevProps.loginResult !== loginResult) {
-      console.log('loginResult ', loginResult);
+      console.log
+      await AsyncStorage.setItem('UserToken', loginResult.userToken);
+      await AsyncStorage.setItem('Name', loginResult.name); 
       setTimeout(() => {
         this.setState({ loadingSpinner: false });
         Alert.alert(
           "",
           loginResult.message,
+          [
+            { text: "OK", onPress: () => this.props.navigation.navigate("Home") },
+          ]
+        );
+
+        Alert
+      }, 500);
+    
+     
+    }
+
+    if (loginError !== null && prevProps.loginError !== loginError) {
+      setTimeout(() => {
+        this.setState({ loadingSpinner: false });
+        Alert.alert(
+          "",
+          loginError.message,
           [
             { text: "OK", onPress: () => console.log("OK Pressed") }
           ]
@@ -60,11 +95,8 @@ export class Login extends Component {
 
         Alert
       }, 500);
-     
-    }
-
-    if (loginError !== null && prevProps.loginError !== loginError) {
-      console.log('loginError cuy ', loginError);
+      
+  
     }
   };
 
@@ -128,13 +160,14 @@ export class Login extends Component {
             Yuk, login untuk cari keperluan camera disini!{' '}
           </Text>
           <View style={{width: '85%'}}>
-          <View style={{marginTop: 10}}></View>
+            <View style={{marginTop: 10}}></View>
             <Field
               name={'email'}
               type={'text'}
               label={'Email'}
               placeholder={'Email'}
               component={renderInput}
+              keyboardType={'default'}
             />
             <Field
               name={'password'}
@@ -144,6 +177,7 @@ export class Login extends Component {
               iconEye={iconEye}
               onPressIcon={() => this.setState({iconEye: !iconEye})}
               component={renderInput}
+              keyboardType={'default'}
             />
             {loginLoading ? (
               <>
@@ -153,18 +187,19 @@ export class Login extends Component {
             ) : (
               <>
                 {buttonComponent(null, 'LOGIN', handleSubmit(this.submitLogin))}
-                <Text
-                  style={{
-                    color: '#13497B',
-                    fontFamily: fonts.primary.bold,
-                    fontSize: RFValue(14),
-                    alignSelf: 'flex-end',
-              
-                  }}
-                  onPress={() => this.props.navigation.navigate("Register")}
-                  >
-                  create new account
-                </Text>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('Register')}>
+                  <Text
+                    style={{
+                      color: '#13497B',
+                      fontFamily: fonts.primary.bold,
+                      fontSize: RFValue(14),
+                      alignSelf: 'flex-end',
+                    }}>
+                    {' '}
+                    create new account{' '}
+                  </Text>
+                </TouchableOpacity>
               </>
             )}
           </View>
@@ -194,7 +229,7 @@ function matchDispatchToProps(dispatch) {
 
 Login = reduxForm({
   form: 'formLogin',
-  destroyOnUnmount: false, // <------ preserve form data
+  destroyOnUnmount: true, // <------ preserve form data
   forceUnregisterOnUnmount: true,
   enableReinitialize: true,
   validate: FormValidation,

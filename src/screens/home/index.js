@@ -1,7 +1,6 @@
-import {Icon, ScrollView} from 'native-base';
 import React, {Component} from 'react';
 // import { connect } from 'react-redux'
-import {Text, View, Image} from 'react-native';
+import {Text, View, Image, BackHandler,ScrollView, TouchableOpacity} from 'react-native';
 import {
   Container,
   Input,
@@ -25,6 +24,9 @@ import IChello from '../../assets/icon_hello.png';
 import IClogout from '../../assets/icon_logout.png';
 import Footer from '../../components/Footer';
 import Filter from '../../components/Filter';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Booking from '../booking'
+import Report from '../report';
 export class Home extends Component {
  constructor(props) {
   super()
@@ -35,18 +37,56 @@ export class Home extends Component {
   }
  }
 
+ handleBackButton = () => {
+  if (this.props.navigation.isFocused()) {
+    this.props.navigation.goBack();
+    // BackHandler.exitApp();
+    // return true;
+  }
+};
+
+onLogout =  async () => {
+  await AsyncStorage.removeItem('UserToken');
+  await AsyncStorage.removeItem('Name');
+  this.props.navigation.replace('Login');
+}
+
+
+ componentDidMount = async () => {
+  BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  const Name =  await AsyncStorage.getItem('Name');
+  this.setState({name : Name})
+ }
+
   tabRender = () => {
     switch (this.state.tabState) {
       case 'home':
-        return this.tabHome()
+        return this.renderTabHome()
         break;
+
+      case 'booking':
+        return <Booking />
+
+      case 'report':
+        return <Report />
     
       default:
         break;
     }
   }
 
-  tabHome = () => {
+  showTabHome = ( ) => {
+    this.setState({ tabState: 'home' });
+  }
+  showTabBooking = ( ) => {
+    this.setState({ tabState: 'booking' });
+  }
+  showTabReport = ( ) => {
+    this.setState({ tabState: 'report' });
+  }
+
+  renderTabHome = () => {
+
     return (
       <ScrollView style={{backgroundColor: '#F8FBFF'}}>
       <View
@@ -61,9 +101,9 @@ export class Home extends Component {
             fontSize: 20,
             marginLeft: '3%',
           }}>
-          Hello,{' '}
+             Hello, {''}
           <Text style={{fontFamily: fonts.rubik.medium, color: '#143656'}}>
-            Fadhil{' '}
+            {this.state.name}
           </Text>
           <Image source={IChello} />
         </Text>
@@ -82,12 +122,12 @@ export class Home extends Component {
               </Button>
             );
           }}>
-          <Popover.Content>
+          <Popover.Content >
             <View>
-              <Text onPress={() => console.log('IM logout')}>
-                {' '}
-                <Image source={IClogout} /> Logout{' '}
-              </Text>
+              <TouchableOpacity style={{flexDirection :'row' }} onPress={() => this.onLogout()}>
+                <Image source={IClogout} />
+                <Text> Logout </Text> 
+              </TouchableOpacity>
             </View>
           </Popover.Content>
         </Popover>
@@ -101,7 +141,7 @@ export class Home extends Component {
         filterAcc={() => console.log("im acc filter action ")}
       />
       </View>
-      {Card()}
+      {Card(() =>this.props.navigation.navigate('ProductDetail'))}
       {Card()} 
     </ScrollView>
     )  
@@ -114,7 +154,10 @@ export class Home extends Component {
       <>
       {this.tabRender()}
        <Footer
-      tabState={this.state.tabState}
+          tabHome={this.showTabHome}
+          tabBooking={this.showTabBooking}
+          tabReport={this.showTabReport}
+          tabState={this.state.tabState}
     />
       </>
  

@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-// import { connect } from 'react-redux'
+import { connect ,} from 'react-redux'
+import {bindActionCreators} from 'redux';
+import {reduxForm, change, Field, Form} from 'redux-form';
 import {Text, View, Image, BackHandler,ScrollView, TouchableOpacity} from 'react-native';
 import {
   Container,
@@ -27,12 +29,15 @@ import Filter from '../../components/Filter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Booking from '../booking'
 import Report from '../report';
+
+import {getProduct} from "../../actions"
 export class Home extends Component {
  constructor(props) {
   super()
   this.state = {
     selected: 0,
     tabState: 'home',
+    arrProduct: [],
 
   }
  }
@@ -56,12 +61,26 @@ onLogout =  async () => {
   BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   const Name =  await AsyncStorage.getItem('Name');
   this.setState({name : Name})
+  this.props.getProduct();
  }
 
-  tabRender = () => {
+ componentDidUpdate = async prevProps => {
+  const {getProductError, getProductResult} = this.props;
+
+  if (getProductResult !== null && prevProps.getProductResult !== getProductResult) {
+    let product =  getProductResult?.product ?? [];
+    this.setState({arrProduct : product})
+  }
+
+  if (getProductError !== null && prevProps.getProductError !== getProductError) {
+   console.log("getProductError ", getProductError);
+  }
+};
+
+  tabRender = (arrProduct) => {
     switch (this.state.tabState) {
       case 'home':
-        return this.renderTabHome()
+        return this.renderTabHome(arrProduct)
         break;
 
       case 'booking':
@@ -84,9 +103,21 @@ onLogout =  async () => {
   showTabReport = ( ) => {
     this.setState({ tabState: 'report' });
   }
+  renderCard = (arrProduct) => {
+    return Card(
+      arrProduct._id,
+      arrProduct.product_name,
+      arrProduct.price,
+      arrProduct.status,
+      arrProduct.image[0],
+      () =>
+        this.props.navigation.navigate('ProductDetail', {data: arrProduct}),
+    );
 
-  renderTabHome = () => {
+  
+  }
 
+  renderTabHome = (arrProduct) => {
     return (
       <ScrollView style={{backgroundColor: '#F8FBFF'}}>
       <View
@@ -141,18 +172,19 @@ onLogout =  async () => {
         filterAcc={() => console.log("im acc filter action ")}
       />
       </View>
-      {Card(() =>this.props.navigation.navigate('ProductDetail'))}
-      {Card()} 
+      {arrProduct.map((data) => this.renderCard(data))}
+      {/* {Card(() =>this.props.navigation.navigate('ProductDetail'))}
+      {Card()}  */}
     </ScrollView>
     )  
   } 
 
   
   render() {
-    const{selected} = this.state;
+    const{selected, arrProduct} = this.state;
     return (
       <>
-      {this.tabRender()}
+      {this.tabRender(arrProduct)}
        <Footer
           tabHome={this.showTabHome}
           tabBooking={this.showTabBooking}
@@ -166,11 +198,32 @@ onLogout =  async () => {
     );
   }
 }
+Home = reduxForm({
+  form: 'formHome',
+  destroyOnUnmount: false, // <------ preserve form data
+  forceUnregisterOnUnmount: true,
+  enableReinitialize: true,
+  // validate: FormValidation,
+})(Home);
 
-// const mapStateToProps = (state) => ({})
+const mapStateToProps = state => ({
+  getProductResult: state.getProduct.result,
+  getProductLoading: state.getProduct.loading,
+  getProductError: state.getProduct.error,
+});
 
-// const mapDispatchToProps = {}
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      getProduct,
+      updateField: (form, field, newValue) =>
+        dispatch(change(form, field, newValue)),
+      resetForm: form => dispatch(reset(form)),
+    },
+    dispatch,
+  );
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(index)
 
-export default Home;
+export default connect(mapStateToProps, matchDispatchToProps)(Home)
+

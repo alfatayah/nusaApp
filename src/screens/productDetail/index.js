@@ -56,12 +56,13 @@ export class ProductDetail extends Component {
 
   render() {
     const {iconEye} = this.state;
-    const {handleSubmit, loginLoading} = this.props;
+    const {handleSubmit, loginLoading, } = this.props;
+    const product = this.props.route.params.data;
     return (
       <ScrollView style={{flex: 1, backgroundColor: '#F8FBFF'}}>
         {subHeader('' , true , () => this.props.navigation.goBack())}
         <ImageSlider
-          data={[{img: imageSample}, {img: imageSample}, {img: imageSample}]}
+          data={[{img: product.image[0]}, {img: product.image[2]}, {img: product.image[1]}]}
           autoPlay={false}
           // onItemChanged={item => console.log('item dari image slider di produk detail', item)}
           closeIconColor="#fff"
@@ -106,17 +107,7 @@ export class ProductDetail extends Component {
 
                 fontFamily: fonts.rubik.regular,
               }}>
-              X-A5 menawarkan beberapa fungsi dan filter yang bertujuan untuk
-              mempermudah hidup Anda saat memotret. Fungsi 4K Burst memungkinkan
-              Anda untuk menghasilkan gambar diam dengan cepat pada 15 fps,
-              sehingga Anda dapat memilih bingkai terbaik, sementara Mode
-              Peningkat Potret membantu memastikan bahwa warna kulit ditampilkan
-              dengan cara yang menyenangkan. Mode Multi Fokus tersedia untuk
-              penumpukan fokus, secara otomatis menggabungkan gambar 4K dan
-              menyesuaikan kedalaman bidang yang diperlukan untuk hasil terbaik.
-              Akhirnya, tujuh belas filter canggih dan sebelas filter simulasi
-              film ditawarkan agar sesuai dengan berbagai situasi, termasuk
-              penghapusan kabut dan fotografi HDR.{' '}
+             { product.description}
             </Text>
           </View>
         </View>

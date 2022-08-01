@@ -28,6 +28,7 @@ import {
   renderInput,
   renderFieldDatePicker,
   subHeader,
+  listItem
 } from '../../components/index';
 import {login} from '../../actions';
 import ILcamera from '../../assets/camera.png';
@@ -56,6 +57,7 @@ export class Booking extends Component {
        visible: false,
        DateOut: new Date(),
        visibleSecond: false,
+       selectedDate: new Date()
     };
   }
 
@@ -70,8 +72,9 @@ export class Booking extends Component {
   };
 
   openDatePickerSecond= () => {
-    this.setState({ visibleSecond: true });
+      this.setState({ visibleSecond: true });
   };
+
   toggleModalSecond = () => {
     this.setState({ visibleSecond: false });
   };
@@ -81,14 +84,21 @@ export class Booking extends Component {
 
   onChangeDate = (newDate) => {
     const date = moment(newDate).format('DD-MM-YYYY');
-    this.setState({ DateIn: date, visible: false });
+    this.setState({ DateIn: date, selectedDate: newDate,visible: false });
     this.props.updateField('formBooking', 'DateIn', date);
   };
 
   onChangeDateSecond = (newDate) => {
+    const {DateIn, selectedDate} = this.state;
     const date = moment(newDate).format('DD-MM-YYYY');
+    // const testDate = moment(newDate).format([YYYY,MM,DD ]);
+
+
     this.setState({ DateOut: date, visibleSecond: false });
     this.props.updateField('formBooking', 'DateOut', date);
+   
+    // const days  = selectedDate - newDate / 365
+    // console.log("days : ", testDate);
   };
 
   handleBackButton = () => {
@@ -111,63 +121,75 @@ componentDidMount = async () => {
     const {iconEye} = this.state;
     const {handleSubmit, loginLoading} = this.props;
     return (
-      <ScrollView style={{flex: 1, backgroundColor: '#F8FBFF'}}>
-        {subHeader('Booking', )}
-     
+      <View style={{flex: 1, backgroundColor: '#F8FBFF'}}>
+      <ScrollView  style={{backgroundColor: '#F8FBFF'}}>
+        {subHeader('Booking' )}
+
         <View style={{backgroundColor: '#F8FBFF'}}>
-        <Text
-              style={{
-                marginTop: 15,
-                marginLeft: '4%',
-                fontSize: 20,
-                fontFamily: fonts.rubik.medium,
-                color: '#143656',
-              }}>
-              Pick Date
-            </Text>
-          <View style={{flexDirection: 'row' ,backgroundColor: '#F8FBFF'}}>
+          <Text style={styles.title}>Pick Date</Text>
+          <View style={{flexDirection: 'row', backgroundColor: '#F8FBFF'}}>
             <Field
-                name="DateIn"
-                type="text"
-                date={this.state.DateIn}
-                visible={this.state.visible}
-                component={renderFieldDatePicker}
-                openModal={this.openDatePicker}
-                closeModal={this.toggleModal}
-                placeholder="Date In"
-                onChangeDate={this.onChangeDate}
-                hideDatePicker={this.hideDatePicker}
-                formatDate="DD-MM-YYYY"
-                modeDate="date"
-              />
+              name="DateIn"
+              type="text"
+              date={this.state.DateIn}
+              visible={this.state.visible}
+              component={renderFieldDatePicker}
+              openModal={this.openDatePicker}
+              closeModal={this.toggleModal}
+              placeholder="Date In"
+              onChangeDate={this.onChangeDate}
+              hideDatePicker={this.hideDatePicker}
+              formatDate="DD-MM-YYYY"
+              modeDate="date"
+              defaultDate={new Date()}
+              minimumDate={new Date()}
+            />
 
             <Field
-                name="DateOut"
-                type="text"
-                date={this.state.DateOut}
-                visible={this.state.visibleSecond}
-                component={renderFieldDatePicker}
-                openModal={this.openDatePickerSecond}
-                closeModal={this.toggleModalSecond}
-                placeholder="Date Out"
-                onChangeDate={this.onChangeDateSecond}
-                hideDatePicker={this.hideDatePickerSecond}
-                formatDate="DD-MM-YYYY"
-                modeDate="date"
-              />
+              name="DateOut"
+              type="text"
+              date={this.state.DateOut}
+              visible={this.state.visibleSecond}
+              component={renderFieldDatePicker}
+              openModal={this.openDatePickerSecond}
+              closeModal={this.toggleModalSecond}
+              placeholder="Date Out"
+              onChangeDate={this.onChangeDateSecond}
+              hideDatePicker={this.hideDatePickerSecond}
+              formatDate="DD-MM-YYYY"
+              modeDate="date"
+              defaultDate={this.state.selectedDate}
+              minimumDate={this.state.selectedDate}
+            />
 
             <Field
-              name={'email'}
+              name={'total'}
               type={'text'}
               label={''}
               placeholder={''}
               component={renderInput}
+              customStyle={styles.customStyle}
+              customInputStyle={styles.customInput}
             />
-
-
-
           </View>
         </View>
+        <View style={{flexDirection: 'row' , justifyContent: 'space-between' ,marginTop: 15,}}>
+          <Text style={styles.title}>Your Options</Text>
+          <Text style={styles.totalCount}>[]</Text>
+        </View>
+
+        {listItem()}
+        {listItem()}
+        {listItem()}
+
+        {listItem()}
+        {listItem()}
+        {listItem()}
+
+
+
+      
+      </ScrollView>
         <View
           style={{
             borderTopLeftRadius: 20,
@@ -175,24 +197,25 @@ componentDidMount = async () => {
             flexDirection: 'row',
             justifyContent: 'center',
             backgroundColor: 'white',
-            marginTop: 10,
             elevation: 100,
             shadowColor: 'black',
           }}>
           <Text
             style={{
               marginRight: 20,
-              marginTop: '7%',
+              marginTop: '5%',
               fontFamily: fonts.rubik.medium,
               fontSize: 20,
+              color: "#143656"
             }}>
             Rp.200.000/hari{' '}
           </Text>
-          {buttonComponent(styles.buttonCustom, 'Select Item', () =>
-            console.log('select item'),
+          {buttonComponent(styles.buttonCustom, 'Book Now', () =>
+            console.log('select item'), false, styles.text
           )}
         </View>
-      </ScrollView>
+
+        </View>
     );
   }
 }

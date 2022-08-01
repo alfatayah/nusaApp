@@ -24,10 +24,11 @@ export const renderFieldDatePicker = ({
     openModal,
     visible,
     hideDatePicker,
+    defaultDate,
+    minimumDate,
     meta: { touched, error },
   }) => {
     var hasError = false;
-  
     if (touched && error !== undefined) {
       hasError = true;
     }
@@ -38,8 +39,8 @@ export const renderFieldDatePicker = ({
         mode="date"
         onConfirm={onChangeDate}
         onCancel={hideDatePicker}
-        defaultDate={new Date()}
-        minimumDate={new Date()}
+        defaultDate={defaultDate}
+        minimumDate={minimumDate}
       />
       <TouchableOpacity style={{ backgroundColor: "white",}} onPress={openModal}>
       <Input

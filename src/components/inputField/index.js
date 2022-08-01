@@ -10,6 +10,7 @@ import { fonts } from '../../utils/fonts';
 import { getScaleIos, RFValue } from '../../utils/utilization';
 import { Container , Input, FormControl, Icon , WarningOutlineIcon} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import styles from './style';
 
 export const renderInput = ({
     input, 
@@ -19,6 +20,8 @@ export const renderInput = ({
     placeholder,
     onPressIcon,
     keyboardType,
+    customStyle,
+    customInputStyle,
     meta: { touched, error },
   }) => {
     var hasError = false;
@@ -26,14 +29,14 @@ export const renderInput = ({
       hasError = true;
     }
     return (
-        <View style={{width: "100%"}}>
-          <Text style={{fontFamily: fonts.rubik.medium, color: '#13497B',}}>
+        <View style={[styles.defaultStyle, customStyle ]}>
+         <Text style={{fontFamily: fonts.rubik.medium, color: '#13497B',}}>
             {label}
           </Text>
           <Input
             {...input}
             type={  iconEye ? 'password' : 'text'}
-            style={{backgroundColor: 'white' , fontFamily: fonts.primary.normal,fontSize: 13 }}
+            style={[styles.inputStyle  , customInputStyle]}
             editable={ true}
             variant="outline"
             placeholder={placeholder}

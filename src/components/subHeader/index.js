@@ -25,7 +25,7 @@ export const subHeader = (
       style={{
         flexDirection: 'row',
         backgroundColor: '',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         marginTop: '5%',
       }}>
       {showBack ? (
@@ -40,7 +40,7 @@ export const subHeader = (
         </TouchableOpacity>
       ) : null}
 
-      <View style={{marginLeft: '-20%', flex: 1, backgroundColor: ''}}>
+      <View style={{ backgroundColor: ''}}>
         <Text
           style={{
             fontFamily: fonts.rubik.normal,

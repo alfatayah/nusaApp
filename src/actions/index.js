@@ -6,6 +6,10 @@ export const REGIST_PROCESS = 'REGIST_PROCESS';
 export const REGIST_SUCCESS = 'REGIST_SUCCESS';
 export const REGIST_ERROR = 'REGIST_ERROR';
 
+export const GET_PRODUCT_PROCESS = 'GET_PRODUCT_PROCESS';
+export const GET_PRODUCT_SUCCESS = 'GET_PRODUCT_SUCCESS';
+export const GET_PRODUCT_ERROR = 'GET_PRODUCT_ERROR';
+
 export function login(data) {
   return {
     type: LOGIN_PROCESS,
@@ -17,6 +21,12 @@ export function register(data) {
   return {
     type: REGIST_PROCESS,
     data: data,
+  };
+}
+
+export function getProduct() {
+  return {
+    type: GET_PRODUCT_PROCESS,
   };
 }
 

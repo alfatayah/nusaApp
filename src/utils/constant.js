@@ -24,7 +24,9 @@ export async function filterFetch(url, options) {
         }
       })
       .then((json) => {
+        // console.log("json " , json)
         const response = json.response ?? json.status;
+        // console.log("response " , response)
         if (response == 401) {
           throw new Error(JSON.stringify(json));
         } else if (response == 404) {
@@ -33,6 +35,41 @@ export async function filterFetch(url, options) {
           throw new Error(json.message || 'Error API fetch data');
         }
         return json.result;
+      });
+  } catch (error) {
+    // console.log("error " , error.message)
+    const errorMessage = error.message;
+    if (errorMessage == 'Network request failed') {
+      throw new Error(
+        `Maaf, terdapat masalah pada jaringan Anda. Silahkan coba kembali.`,
+      );
+    } else {
+      throw new Error(error);
+    }
+  }
+}
+
+export async function filterFetchGet(url, options) {
+  try {
+    return await fetch(url, options)
+      .then((res) => {
+        if (res.status !== 401 && res.status !== 200 && res.status !== 404) {
+          if (res.status == 503) {
+            throw new Error(
+              `${res.status}: Maaf, terdapat masalah pada jaringan Anda. Silahkan coba kembali.`,
+            );
+          } else {
+            throw new Error(
+              `${res.status}: Maaf, terjadi gangguan pada sistem kami. Silahkan coba beberapa saat lagi.`,
+            );
+          }
+        } else {
+          return res.json();
+        }
+      })
+      .then((json) => {
+        console.log("json " , json)
+        return json;
       });
   } catch (error) {
     console.log("error " , error.message)

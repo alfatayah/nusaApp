@@ -33,7 +33,6 @@ export class Authentication extends Component {
   componentDidMount = async () => {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     const userToken = await AsyncStorage.getItem('UserToken');
-    console.log("userToken", userToken);
     if (userToken) {
         setTimeout(() => {
             this.props.navigation.replace('Home');

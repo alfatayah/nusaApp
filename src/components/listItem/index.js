@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 import { fonts } from '../../utils/fonts';
-import { getScaleIos, RFValue } from '../../utils/utilization';
+import { getScaleIos, RFValue, formatCurrency } from '../../utils/utilization';
 import { Spinner, HStack, Heading, Center, NativeBaseProvider, Icon } from "native-base";
 import {
   widthPercentageToDP as wp,
@@ -33,7 +33,7 @@ export const listItem = (
         </TouchableOpacity>
         
         <Text style={{fontFamily: fonts.rubik.regular, fontSize: 16,color: '#143656', marginTop: -10}}>{data.nameProduct} </Text>
-        <Text style={{fontFamily: fonts.rubik.medium, color: '#143656', marginTop: 5}}>{data.price}/day</Text>
+        <Text style={{fontFamily: fonts.rubik.medium, color: '#143656', marginTop: 5}}>{formatCurrency(data.price)}/day</Text>
         </View>
    </View>
     )

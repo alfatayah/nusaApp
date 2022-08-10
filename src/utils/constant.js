@@ -68,11 +68,9 @@ export async function filterFetchGet(url, options) {
         }
       })
       .then((json) => {
-        console.log("json " , json)
         return json;
       });
   } catch (error) {
-    console.log("error " , error.message)
     const errorMessage = error.message;
     if (errorMessage == 'Network request failed') {
       throw new Error(

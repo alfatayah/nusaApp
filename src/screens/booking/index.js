@@ -20,6 +20,7 @@ import {selectedProduct} from '../../actions';
 // import {FormValidation} from '../../utils/FormValidation';
 import styles from './style';
 import moment from 'moment';
+import { formatCurrency } from '../../utils/utilization';
 
 const imageSample =
   'https://www.pondoklensa.com/files/photo/web/product/md/25e6b113514b4fc386da48f362f5730e3.jpg';
@@ -32,9 +33,23 @@ export class Booking extends Component {
        visible: false,
        DateOut: new Date(),
        visibleSecond: false,
-       selectedDate: new Date()
+       selectedDate: new Date(),
+       productData : this.props.dataProduct?.arr ?? []
     };
   }
+
+  componentDidMount = async () => {
+    // BackHandler.addEventListener('hardwareBackPress', this.handleBacksButton);
+  }
+    componentDidUpdate = async (prevProps) => {
+      const {dataProduct} = this.props;
+      // loginResult !== null && prevProps.loginResult !== loginResult
+      if (prevProps.dataProduct !== dataProduct) {
+        this.setState({
+          productData: dataProduct.arr
+        });
+      }
+    };
 
   openDatePicker = () => {
     this.setState({ visible: true });
@@ -87,19 +102,16 @@ export class Booking extends Component {
     this.props.navigation.goBack();
   };
 
-  onClose = () => {
-    this.props.selectedProduct("ini delete");
+  onClose = (data) => {
+    this.props.selectedProduct(data);
   }
 
-componentDidMount = async () => {
-  // BackHandler.addEventListener('hardwareBackPress', this.handleBacksButton);
-}
-  componentDidUpdate = async prevProps => {};
+
 
   render() {
-    const {iconEye} = this.state;
-    const {handleSubmit, loginLoading, dataProduct} = this.props;
-    const productData = dataProduct?.arr ?? [];
+    const {iconEye, productData} = this.state;
+    const {handleSubmit, loginLoading} = this.props;
+
 
     return (
       <View style={{flex: 1, backgroundColor: '#F8FBFF'}}>
@@ -156,10 +168,10 @@ componentDidMount = async () => {
         </View>
         <View style={{flexDirection: 'row' , justifyContent: 'space-between' ,marginTop: 15,}}>
           <Text style={styles.title}>Your Options</Text>
-          <Text style={styles.totalCount}>[]</Text>
+          <Text style={styles.totalCount}>{productData.length}</Text>
         </View>
    
-        {productData.map((data) => listItem(data, () => this.onClose()))}
+        {productData.map((data) => listItem(data, () => this.onClose(data)))}
 
 
 
@@ -184,7 +196,7 @@ componentDidMount = async () => {
               fontSize: 20,
               color: "#143656"
             }}>
-            Rp.200.000/hari{' '}
+            {formatCurrency(productData.reduce((n, {price}) => n + price, 0)) }
           </Text>
           {buttonComponent(styles.buttonCustom, 'Book Now', () =>
             console.log('select item'), false, styles.text

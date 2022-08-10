@@ -192,10 +192,10 @@ export const regexEmail = (newValue) => {
 //   return output[0];
 // };
 
-// export const substringDot = (newValue) => {
-//   var output = newValue.split('.');
-//   return output[0];
-// };
+export const substringDot = (newValue) => {
+  var output = newValue.split('.');
+  return output[0];
+};
 
 // export const substringUrl = (newValue) => {
 //   var output = newValue.split('/');
@@ -428,12 +428,9 @@ export const regexEmail = (newValue) => {
 //   return value.replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 // };
 
-// export const fdeFormatCurrency = (value) => {
-//   if (!value) {
-//     return value;
-//   }
-//   return 'Rp. ' + value.replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-// };
+export const formatCurrency = (value) => {
+  return 'Rp.' + value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+};
 
 // export const fdeFormatCurrency2 = (value) => {
 //   let pattern = /^\d+$/;

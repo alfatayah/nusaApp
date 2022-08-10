@@ -38,6 +38,8 @@ export class Home extends Component {
     selected: 0,
     tabState: 'home',
     arrProduct: [],
+    query: '',
+    filter: '',
 
   }
  }
@@ -104,20 +106,55 @@ onLogout =  async () => {
     this.setState({ tabState: 'report' });
   }
   renderCard = (arrProduct) => {
-    return Card(
-      arrProduct._id,
-      arrProduct.product_name,
-      arrProduct.price,
-      arrProduct.status,
-      arrProduct.image[0],
-      () =>
-        this.props.navigation.navigate('ProductDetail', {data: arrProduct}),
-    );
+      return Card(
+        arrProduct._id,
+        arrProduct.product_name,
+        arrProduct?.price ?? 0,
+        arrProduct.status,
+        arrProduct?.image[0],
+        () =>
+          this.props.navigation.navigate('ProductDetail', {data: arrProduct}),
+      );
+  }
+  onFindProduct = (data, query) => {
+    const item = [];
+    const regex = new RegExp(`${query.trim()}`, 'i');
+    if (query === '') {
+      return data;
+    } else if(query){
+      for (const nama of data) {
+        if (nama.product_name.search(regex) >= 0) {
+          item.push(nama);
+        }
+      } 
+    } 
 
-  
+    return item;
+  }
+
+  onFilterProduct = (data, filter) => {
+    const item = [];
+    if(filter === ''){
+      return data;
+    }else if(filter){
+      for (const type of data) {
+        if (type.typeId.name === filter) {
+            item.push(type);
+        }
+      } 
+    }
+    return item;
+
+  }
+
+  onChangeSearch = (text) =>{
+    this.setState({query : text})
   }
 
   renderTabHome = (arrProduct) => {
+    const {query, filter} = this.state;
+    let dataSearch = this.onFindProduct(arrProduct, query);
+    let dataFilter = this.onFilterProduct(arrProduct, filter);
     return (
       <ScrollView style={{backgroundColor: '#F8FBFF'}}>
       <View
@@ -163,18 +200,21 @@ onLogout =  async () => {
           </Popover.Content>
         </Popover>
       </View>
-      {searchBar()}
+      {searchBar(text =>  this.onChangeSearch(text))}
       <View style={{flexDirection: 'row', marginTop: "3%"}}>
       <Filter
-        filterCamera={() => console.log("im camera filter action ")}
-        filterLensa={() => console.log("im lensa filter action ")}
-        filterLightning={() => console.log("im lensa linghing action ")}
-        filterAcc={() => console.log("im acc filter action ")}
+        filterCamera={() =>this.setState({filter : "Camera"})}
+        filterLensa={() => this.setState({filter : "Lensa"})}
+        filterLighting={() => this.setState({filter : "Lighting"})}
+        filterAcc={() => this.setState({filter : "Accessories"})}
       />
       </View>
-      {arrProduct.map((data) => this.renderCard(data))}
-      {/* {Card(() =>this.props.navigation.navigate('ProductDetail'))}
-      {Card()}  */}
+       { query !== '' ? (
+          dataSearch.map((data) => this.renderCard(data))
+       ) : (
+          dataFilter.map((data) => this.renderCard(data))
+       )}
+   
     </ScrollView>
     )  
   } 

@@ -1,48 +1,23 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {reduxForm, change, Field, Form} from 'redux-form';
+import {reduxForm, change, Field} from 'redux-form';
 import {
-  SafeAreaView,
   ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
   View,
-  Image,
-  ActivityIndicator,
-  Alert,
   BackHandler
 } from 'react-native';
 import {
-  Container,
-  Input,
-  FormControl,
-  Icon,
-  Center,
-  NativeBaseProvider,
-} from 'native-base';
-import {
   buttonComponent,
-  Loading,
   renderInput,
   renderFieldDatePicker,
   subHeader,
   listItem
 } from '../../components/index';
-import {login} from '../../actions';
-import ILcamera from '../../assets/camera.png';
-import {RFValue} from '../../utils/utilization';
 import {fonts} from '../../utils/fonts';
-import {BG_COLOR} from '../../utils/constant';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {FormValidation} from '../../utils/FormValidation';
-import {ImageSlider} from 'react-native-image-slider-banner';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import {selectedProduct} from '../../actions';
+// import {FormValidation} from '../../utils/FormValidation';
 import styles from './style';
 import moment from 'moment';
 
@@ -112,6 +87,10 @@ export class Booking extends Component {
     this.props.navigation.goBack();
   };
 
+  onClose = () => {
+    this.props.selectedProduct("ini delete");
+  }
+
 componentDidMount = async () => {
   // BackHandler.addEventListener('hardwareBackPress', this.handleBacksButton);
 }
@@ -119,7 +98,9 @@ componentDidMount = async () => {
 
   render() {
     const {iconEye} = this.state;
-    const {handleSubmit, loginLoading} = this.props;
+    const {handleSubmit, loginLoading, dataProduct} = this.props;
+    const productData = dataProduct?.arr ?? [];
+
     return (
       <View style={{flex: 1, backgroundColor: '#F8FBFF'}}>
       <ScrollView  style={{backgroundColor: '#F8FBFF'}}>
@@ -177,14 +158,9 @@ componentDidMount = async () => {
           <Text style={styles.title}>Your Options</Text>
           <Text style={styles.totalCount}>[]</Text>
         </View>
+   
+        {productData.map((data) => listItem(data, () => this.onClose()))}
 
-        {listItem()}
-        {listItem()}
-        {listItem()}
-
-        {listItem()}
-        {listItem()}
-        {listItem()}
 
 
 
@@ -220,12 +196,15 @@ componentDidMount = async () => {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  dataProduct: state.selectedProduct,
+});
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
      Booking,
+     selectedProduct,
       updateField: (form, field, newValue) =>
         dispatch(change(form, field, newValue)),
       resetForm: form => dispatch(reset(form)),
@@ -239,7 +218,7 @@ Booking = reduxForm({
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true,
   enableReinitialize: true,
-  validate: FormValidation,
+  // validate: FormValidation,
 })(Booking);
 
 export default connect(mapStateToProps, matchDispatchToProps)(Booking);

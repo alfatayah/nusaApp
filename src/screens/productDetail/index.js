@@ -1,47 +1,27 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {reduxForm, change, Field, Form} from 'redux-form';
+import {reduxForm, change} from 'redux-form';
 import {
-  SafeAreaView,
   ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
   View,
-  Image,
-  ActivityIndicator,
   Alert,
 } from 'react-native';
 import {
-  Container,
-  Input,
-  FormControl,
-  Icon,
-  Center,
-  NativeBaseProvider,
-} from 'native-base';
-import {
   buttonComponent,
-  Loading,
-  renderInput,
   subHeader,
 } from '../../components/index';
-import {login} from '../../actions';
-import ILcamera from '../../assets/camera.png';
-import {RFValue} from '../../utils/utilization';
+import {selectedProduct} from '../../actions';
+import {formatCurrency} from '../../utils/utilization';
 import {fonts} from '../../utils/fonts';
-import {BG_COLOR} from '../../utils/constant';
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {FormValidation} from '../../utils/FormValidation';
 import {ImageSlider} from 'react-native-image-slider-banner';
 import {
-  widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import styles from './style';
-
 const imageSample =
   'https://www.pondoklensa.com/files/photo/web/product/md/25e6b113514b4fc386da48f362f5730e3.jpg';
 export class ProductDetail extends Component {
@@ -52,19 +32,59 @@ export class ProductDetail extends Component {
     };
   }
 
+  checkData = async (productSaved) => {
+    let status  = 0
+    this.props.dataProduct.arr.forEach(result => {
+      if (result.id === productSaved.id) {
+         status = 1;
+      }
+      });
+      return status;
+  }
+
+
+  onSelected = async () => {
+    try {
+      const product = this.props.route.params.data;
+      const productSaved = {
+        id: product._id,
+        image: product.image[0],
+        nameProduct: product.product_name,
+        price: product.price,
+      };
+      let dataProduct = await this.checkData(productSaved);
+      if (dataProduct != 1) {
+        Alert.alert('', 'Produk terpilih', [{text: 'OK'}]);
+        Alert;
+        this.props.selectedProduct(productSaved, 1);
+      } else {
+        Alert.alert('', 'Produk sudah terpilih', [{text: 'OK'}]);
+        Alert;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  componentDidMount = async () => {
+    
+  }
+
   componentDidUpdate = async prevProps => {};
 
   render() {
     const {iconEye} = this.state;
-    const {handleSubmit, loginLoading, } = this.props;
+    const {handleSubmit, loginLoading} = this.props;
     const product = this.props.route.params.data;
     return (
       <ScrollView style={{flex: 1, backgroundColor: '#F8FBFF'}}>
-        {subHeader('' , true , () => this.props.navigation.goBack())}
+        {subHeader('', true, () => this.props.navigation.goBack())}
         <ImageSlider
-          data={[{img: product.image[0]}, {img: product.image[2]}, {img: product.image[1]}]}
+          data={[
+            {img: product.image[0]},
+            {img: product.image[2]},
+            {img: product.image[1]},
+          ]}
           autoPlay={false}
-          // onItemChanged={item => console.log('item dari image slider di produk detail', item)}
           closeIconColor="#fff"
         />
         <View style={{backgroundColor: '#F8FBFF'}}>
@@ -84,7 +104,7 @@ export class ProductDetail extends Component {
                 fontFamily: fonts.rubik.regular,
                 color: '#143656',
               }}>
-              Fujifilm X-A5 Mirrorless{' '}
+              {product.product_name}
             </Text>
           </View>
           <View style={{backgroundColor: '#F8FBFF'}}>
@@ -107,7 +127,7 @@ export class ProductDetail extends Component {
 
                 fontFamily: fonts.rubik.regular,
               }}>
-             { product.description}
+              {product.description}
             </Text>
           </View>
         </View>
@@ -124,16 +144,16 @@ export class ProductDetail extends Component {
           }}>
           <Text
             style={{
-              marginRight: 20,
+              marginRight: 50,
               marginTop: '7%',
               fontFamily: fonts.rubik.medium,
               fontSize: 20,
-              color: "#143656"
+              color: '#143656',
             }}>
-            Rp.200.000/hari{' '}
+            {formatCurrency(product.price)}
           </Text>
           {buttonComponent(styles.buttonCustom, 'Select Item', () =>
-            console.log('select item'),
+            this.onSelected(),
           )}
         </View>
       </ScrollView>
@@ -141,12 +161,15 @@ export class ProductDetail extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state , props)=> ({
+  dataProduct: state.selectedProduct,
+});
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       ProductDetail,
+      selectedProduct,
       updateField: (form, field, newValue) =>
         dispatch(change(form, field, newValue)),
       resetForm: form => dispatch(reset(form)),

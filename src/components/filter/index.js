@@ -19,20 +19,18 @@ import {
   export default class Filter extends Component {
 
     actionFilter = (id) => {
-      const { filterCamera , filterLensa, filterLightning, filterAcc} = this.props;
-      console.log('id', id);
       switch (id) {
         case 1:
-          filterCamera
+           this.props.filterCamera();
           break;
         case 2:
-          filterLensa
+          this.props.filterLensa();
             break;
         case 3:
-          filterLightning
+          this.props.filterLighting();
             break;
         case 4:
-          filterAcc
+          this.props.filterAcc()
           break;
         default:
           break;
@@ -57,6 +55,7 @@ import {
   }
 
   render() {  
+    // const { filterCamera , filterLensa, filterLightning, filterAcc} = this.props;
     const dataFilter = [
       {
         "id": 1,
@@ -80,8 +79,9 @@ import {
       },
     ]
     return (
+      
       <View style={{flexDirection: 'row'}}>
-         {dataFilter.map((data) => this.filterComponent( data))}
+         {dataFilter.map((data) => this.filterComponent(data))}
       </View>
     );
   }

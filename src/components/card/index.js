@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Platform, TouchableOpacity, Text, Image} from 'react-native';
 import {fonts} from '../../utils/fonts';
-import {getScaleIos, RFValue} from '../../utils/utilization';
+import {getScaleIos, RFValue, formatCurrency, substringDot} from '../../utils/utilization';
 
 import {
   widthPercentageToDP as wp,
@@ -14,7 +14,6 @@ export const Card = (
   status,
   image,
   onPress,
-
   ) => {
   return (
     <TouchableOpacity
@@ -62,7 +61,13 @@ export const Card = (
               justifyContent: 'space-between',
               marginTop: '1.5%',
             }}>
-            <Text> 1 day {price}</Text>
+            <Text 
+            style={{
+              fontFamily: fonts.rubik.regular,
+              fontSize: 14,
+              color: '#143656',
+            }}
+            > 1 day {formatCurrency(price)}</Text>
             <View
               style={{
                 width: wp(25),

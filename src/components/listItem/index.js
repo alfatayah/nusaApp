@@ -17,12 +17,14 @@ import {
 // import styles from './style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 export const listItem = (
+  data,
+  close,
   ) => {
     return (
-   <View style={{width: "95%",height: hp(12) ,backgroundColor: 'white' , flexDirection: 'row', marginTop: 15, borderRadius: 10, alignSelf: 'center', elevation: 5}}>
-        <Image style={{width:"30%", height: hp(10)}} source={{uri: 'https://www.pondoklensa.com/files/photo/web/product/md/25e6b113514b4fc386da48f362f5730e3.jpg'}}/>
+   <View key={data.id} style={{width: "95%",height: hp(12) ,backgroundColor: 'white' , flexDirection: 'row', marginTop: 15, borderRadius: 10, alignSelf: 'center', elevation: 5}}>
+        <Image style={{width:"30%", height: hp(10)}} source={{uri: data.image}}/>
         <View style={{marginLeft: 20,flexDirection: 'column'}}>
-        <TouchableOpacity style={{marginLeft: "74%" , marginTop: 3, backgroundColor: '', width: 20}}>
+        <TouchableOpacity  onPress={close} style={{marginLeft: "74%" , marginTop: 3, backgroundColor: '', width: 20}}>
         <Icon
           size="lg"
           color="#FF6666"
@@ -30,8 +32,8 @@ export const listItem = (
         />
         </TouchableOpacity>
         
-        <Text style={{fontFamily: fonts.rubik.regular, fontSize: 18,color: '#143656', marginTop: -10}}>Fujifilm X-A5 Mirrorless </Text>
-        <Text style={{fontFamily: fonts.rubik.medium, color: '#143656', marginTop: 5}}>Rp.200.000/day</Text>
+        <Text style={{fontFamily: fonts.rubik.regular, fontSize: 16,color: '#143656', marginTop: -10}}>{data.nameProduct} </Text>
+        <Text style={{fontFamily: fonts.rubik.medium, color: '#143656', marginTop: 5}}>{data.price}/day</Text>
         </View>
    </View>
     )

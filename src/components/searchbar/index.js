@@ -14,10 +14,15 @@ import {
   } from 'native-base';
   import {Text, View, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-export const searchBar = () => {
+export const searchBar = (
+  onChangeText,
+  value,
+
+) => {
   return (
-    <View style={{backgroundColor: "white", borderRadius: 50, marginTop: "5%"}} > 
+    <View  style={{backgroundColor: "white", borderRadius: 50, marginTop: "5%"}} > 
       <Input
+        onChangeText={onChangeText}
         placeholder="Mau sewa apa hari ini?"
         variant="outline"
         width="100%"

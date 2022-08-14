@@ -33,7 +33,7 @@ export const renderFieldDatePicker = ({
       hasError = true;
     }
     return (
-     <View style={{marginLeft: 15,marginTop: 10 , width: wp(30)}}>
+     <View style={{marginLeft: 15,marginTop: 10 , width: wp(30), }}>
        <DateTimePickerModal
         isVisible={visible}
         mode="date"
@@ -42,7 +42,7 @@ export const renderFieldDatePicker = ({
         defaultDate={defaultDate}
         minimumDate={minimumDate}
       />
-      <TouchableOpacity style={{ backgroundColor: "white",}} onPress={openModal}>
+      <TouchableOpacity onPress={openModal}>
       <Input
             {...input}
             type={type}

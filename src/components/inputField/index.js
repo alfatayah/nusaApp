@@ -22,6 +22,7 @@ export const renderInput = ({
     keyboardType,
     customStyle,
     customInputStyle,
+    editable,
     meta: { touched, error },
   }) => {
     var hasError = false;
@@ -37,7 +38,7 @@ export const renderInput = ({
             {...input}
             type={  iconEye ? 'password' : 'text'}
             style={[styles.inputStyle  , customInputStyle]}
-            editable={ true}
+            editable={ editable}
             variant="outline"
             placeholder={placeholder}
             keyboardType={keyboardType}

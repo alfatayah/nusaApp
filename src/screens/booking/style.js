@@ -37,7 +37,7 @@ export default StyleSheet.create({
 
   totalCount: {
     marginRight: "7%",
-    fontSize: 20,
+    fontSize: 15,
     fontFamily: fonts.rubik.medium,
     color: '#143656',
   },

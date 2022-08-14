@@ -12,15 +12,16 @@ import {
   buttonComponent,
   renderInput,
   renderFieldDatePicker,
+  renderFieldHidden,  
   subHeader,
   listItem
 } from '../../components/index';
 import {fonts} from '../../utils/fonts';
 import {selectedProduct} from '../../actions';
-// import {FormValidation} from '../../utils/FormValidation';
 import styles from './style';
 import moment from 'moment';
 import { formatCurrency } from '../../utils/utilization';
+import {FormValidation} from '../../utils/FormValidation';
 
 const imageSample =
   'https://www.pondoklensa.com/files/photo/web/product/md/25e6b113514b4fc386da48f362f5730e3.jpg';
@@ -33,7 +34,9 @@ export class Booking extends Component {
        visible: false,
        DateOut: new Date(),
        visibleSecond: false,
+       visableDateOut: false,
        selectedDate: new Date(),
+       tomorrow: new Date(),
        productData : this.props.dataProduct?.arr ?? []
     };
   }
@@ -72,23 +75,29 @@ export class Booking extends Component {
     this.setState({ visibleSecond: false });
   };
 
+  calculateDate = () =>{
+    const {DateIn, DateOut} = this.state;
+    const firstDate = moment(DateIn, 'DD-MM-YYYY');
+    const secondDate = moment(DateOut, 'DD-MM-YYYY');
+    const diff = secondDate.diff(firstDate,  'days');
+    this.props.updateField('formBooking', 'total', diff.toString() + " days");
+  }
+
   onChangeDate = (newDate) => {
     const date = moment(newDate).format('DD-MM-YYYY');
-    this.setState({ DateIn: date, selectedDate: newDate,visible: false });
+    // const tomorrow = moment(newDate).add(1, 'days').format('DD-MM-YYYY');
+    // console.log("tomorrow",tomorrow);
+
     this.props.updateField('formBooking', 'DateIn', date);
+    this.setState({ DateIn: date, selectedDate: newDate, visible: false });
   };
 
   onChangeDateSecond = (newDate) => {
-    const {DateIn, selectedDate} = this.state;
     const date = moment(newDate).format('DD-MM-YYYY');
-    // const testDate = moment(newDate).format([YYYY,MM,DD ]);
-
-
-    this.setState({ DateOut: date, visibleSecond: false });
     this.props.updateField('formBooking', 'DateOut', date);
-   
-    // const days  = selectedDate - newDate / 365
-    // console.log("days : ", testDate);
+    this.calculateDate();
+    this.setState({ DateOut: date, visibleSecond: false,  });
+
   };
 
   handleBackButton = () => {
@@ -106,11 +115,15 @@ export class Booking extends Component {
     this.props.selectedProduct(data);
   }
 
+  onSubmit = async (values) => {
+    console.log("values " , values);
+  }
+
 
 
   render() {
     const {iconEye, productData} = this.state;
-    const {handleSubmit, loginLoading} = this.props;
+    const {handleSubmit, loginLoading, } = this.props;
 
 
     return (
@@ -161,14 +174,19 @@ export class Booking extends Component {
               label={''}
               placeholder={''}
               component={renderInput}
+              editable={false}
               customStyle={styles.customStyle}
               customInputStyle={styles.customInput}
+            />
+              <Field
+              name={'totalValue'}
+              component={renderFieldHidden}
             />
           </View>
         </View>
         <View style={{flexDirection: 'row' , justifyContent: 'space-between' ,marginTop: 15,}}>
           <Text style={styles.title}>Your Options</Text>
-          <Text style={styles.totalCount}>{productData.length}</Text>
+          <Text style={styles.totalCount}>{'( '+productData.length +' )'}</Text>
         </View>
    
         {productData.map((data) => listItem(data, () => this.onClose(data)))}
@@ -190,7 +208,7 @@ export class Booking extends Component {
           }}>
           <Text
             style={{
-              marginRight: 20,
+              marginRight: 70,
               marginTop: '5%',
               fontFamily: fonts.rubik.medium,
               fontSize: 20,
@@ -198,8 +216,8 @@ export class Booking extends Component {
             }}>
             {formatCurrency(productData.reduce((n, {price}) => n + price, 0)) }
           </Text>
-          {buttonComponent(styles.buttonCustom, 'Book Now', () =>
-            console.log('select item'), false, styles.text
+          {buttonComponent(styles.buttonCustom, 'Book Now',
+           handleSubmit(this.onSubmit ), false, styles.text
           )}
         </View>
 
@@ -230,7 +248,7 @@ Booking = reduxForm({
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true,
   enableReinitialize: true,
-  // validate: FormValidation,
+  validate: FormValidation,
 })(Booking);
 
 export default connect(mapStateToProps, matchDispatchToProps)(Booking);

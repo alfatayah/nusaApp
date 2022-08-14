@@ -39,8 +39,17 @@ export const FormValidation = (values) => {
     errors.passRegist = 'password harus diisi';
   } 
 
-  if (!values.address || values.address === '') {
-    errors.address = 'alamat harus diisi';
+  if (!values.DateIn || values.DateIn === '') {
+    console.log("DateIn");
+    errors.DateIn = 'Tanggal harus diisi';
+  } 
+
+  if (!values.DateOut || values.DateIn === '') {
+    errors.DateOut = 'Tanggal harus diisi';
+  } 
+
+  if (!values.totalValue || values.totalValue === '') {
+    errors.total = 'Pilih tanggal booking';
   } 
 
 

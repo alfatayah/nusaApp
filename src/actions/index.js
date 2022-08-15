@@ -10,8 +10,13 @@ export const GET_PRODUCT_PROCESS = 'GET_PRODUCT_PROCESS';
 export const GET_PRODUCT_SUCCESS = 'GET_PRODUCT_SUCCESS';
 export const GET_PRODUCT_ERROR = 'GET_PRODUCT_ERROR';
 
+export const BOOKING_PROCESS = 'BOOKING_PROCESS';
+export const BOOKING_SUCCESS = 'BOOKING_SUCCESS';
+export const BOOKING_ERROR = 'BOOKING_ERROR';
+
 export const SELECTED_PRODUCT = 'SELECTED_PRODUCT';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
+export const DELETE_ALL_PRODUCT = 'DELETE_ALL_PRODUCT';
 
 export function login(data) {
   return {
@@ -39,12 +44,22 @@ export function selectedProduct(data, flag) {
       type: SELECTED_PRODUCT,
       data: data,
     };
+  } else if(flag == 2){
+    return {
+      type: DELETE_ALL_PRODUCT,
+      data: data,
+    };
   } else {
     return {
       type: DELETE_PRODUCT,
       data: data,
     };
   }
-
 }
 
+export function booking(data) {
+  return {
+    type: BOOKING_PROCESS,
+    data: data,
+  };
+}

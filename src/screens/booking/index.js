@@ -6,7 +6,8 @@ import {
   ScrollView,
   Text,
   View,
-  BackHandler
+  BackHandler,
+  Alert
 } from 'react-native';
 import {
   buttonComponent,
@@ -17,11 +18,12 @@ import {
   listItem
 } from '../../components/index';
 import {fonts} from '../../utils/fonts';
-import {selectedProduct} from '../../actions';
+import {selectedProduct , booking} from '../../actions';
 import styles from './style';
 import moment from 'moment';
 import { formatCurrency } from '../../utils/utilization';
 import {FormValidation} from '../../utils/FormValidation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const imageSample =
   'https://www.pondoklensa.com/files/photo/web/product/md/25e6b113514b4fc386da48f362f5730e3.jpg';
@@ -37,6 +39,7 @@ export class Booking extends Component {
        visableDateOut: false,
        selectedDate: new Date(),
        tomorrow: new Date(),
+       totalPrice: 0,
        productData : this.props.dataProduct?.arr ?? []
     };
   }
@@ -45,13 +48,30 @@ export class Booking extends Component {
     // BackHandler.addEventListener('hardwareBackPress', this.handleBacksButton);
   }
     componentDidUpdate = async (prevProps) => {
-      const {dataProduct} = this.props;
+      const {dataProduct, bookingResult} = this.props;
       // loginResult !== null && prevProps.loginResult !== loginResult
       if (prevProps.dataProduct !== dataProduct) {
         this.setState({
           productData: dataProduct.arr
         });
       }
+
+      if (bookingResult !== null && prevProps.bookingResult !== bookingResult) {
+       this.props.selectedProduct(null, 2)
+        setTimeout(() => {
+          Alert.alert(
+            "",
+            bookingResult.message,
+            [
+              { text: "OK", onPress:  this.props.goHome },
+            ]
+          );
+  
+          Alert
+        }, 500);
+      
+      }
+
     };
 
   openDatePicker = () => {
@@ -76,28 +96,29 @@ export class Booking extends Component {
   };
 
   calculateDate = () =>{
-    const {DateIn, DateOut} = this.state;
+    const {DateIn, DateOut, productData} = this.state;
     const firstDate = moment(DateIn, 'DD-MM-YYYY');
     const secondDate = moment(DateOut, 'DD-MM-YYYY');
     const diff = secondDate.diff(firstDate,  'days');
+    const price = productData.reduce((n, {price}) => n + price, 0)
+    let totalPrice = diff * price;
+    this.setState({totalPrice: totalPrice })
     this.props.updateField('formBooking', 'total', diff.toString() + " days");
+    this.props.updateField('formBooking', 'totalValue', diff.toString());
   }
 
   onChangeDate = (newDate) => {
     const date = moment(newDate).format('DD-MM-YYYY');
-    // const tomorrow = moment(newDate).add(1, 'days').format('DD-MM-YYYY');
-    // console.log("tomorrow",tomorrow);
-
-    this.props.updateField('formBooking', 'DateIn', date);
+    this.props.updateField('formBooking', 'dateIn', date);
     this.setState({ DateIn: date, selectedDate: newDate, visible: false });
+    this.calculateDate();
   };
 
   onChangeDateSecond = (newDate) => {
     const date = moment(newDate).format('DD-MM-YYYY');
-    this.props.updateField('formBooking', 'DateOut', date);
-    this.calculateDate();
+    this.props.updateField('formBooking', 'dateOut', date);
     this.setState({ DateOut: date, visibleSecond: false,  });
-
+    this.calculateDate();
   };
 
   handleBackButton = () => {
@@ -116,13 +137,25 @@ export class Booking extends Component {
   }
 
   onSubmit = async (values) => {
-    console.log("values " , values);
+    const {productData, totalPrice} = this.state;
+    let arrayID = []; 
+    productData.forEach(element => {
+      arrayID.push(element.id);
+    });
+    this.props.booking({
+        dateIn: values.dateIn,
+        dateOut : values.dateOut, 
+        totalDays : values.totalValue,
+        product_id: arrayID,
+        totalBooking : totalPrice 
+    })
+
   }
 
 
 
   render() {
-    const {iconEye, productData} = this.state;
+    const {iconEye, totalPrice, productData} = this.state;
     const {handleSubmit, loginLoading, } = this.props;
 
 
@@ -135,7 +168,7 @@ export class Booking extends Component {
           <Text style={styles.title}>Pick Date</Text>
           <View style={{flexDirection: 'row', backgroundColor: '#F8FBFF'}}>
             <Field
-              name="DateIn"
+              name="dateIn"
               type="text"
               date={this.state.DateIn}
               visible={this.state.visible}
@@ -152,7 +185,7 @@ export class Booking extends Component {
             />
 
             <Field
-              name="DateOut"
+              name="dateOut"
               type="text"
               date={this.state.DateOut}
               visible={this.state.visibleSecond}
@@ -214,7 +247,7 @@ export class Booking extends Component {
               fontSize: 20,
               color: "#143656"
             }}>
-            {formatCurrency(productData.reduce((n, {price}) => n + price, 0)) }
+            {formatCurrency(totalPrice < 0 ? 0 : totalPrice   ) }
           </Text>
           {buttonComponent(styles.buttonCustom, 'Book Now',
            handleSubmit(this.onSubmit ), false, styles.text
@@ -228,12 +261,15 @@ export class Booking extends Component {
 
 const mapStateToProps = state => ({
   dataProduct: state.selectedProduct,
+  bookingResult: state.booking.result,
+  bookingLoading: state.booking.loading,
+  bookingError: state.booking.error,
 });
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-     Booking,
+    booking,
      selectedProduct,
       updateField: (form, field, newValue) =>
         dispatch(change(form, field, newValue)),
@@ -245,7 +281,7 @@ function matchDispatchToProps(dispatch) {
 
 Booking = reduxForm({
   form: 'formBooking',
-  destroyOnUnmount: false, // <------ preserve form data
+  destroyOnUnmount: true, // <------ preserve form data
   forceUnregisterOnUnmount: true,
   enableReinitialize: true,
   validate: FormValidation,

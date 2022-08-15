@@ -40,7 +40,6 @@ export const FormValidation = (values) => {
   } 
 
   if (!values.DateIn || values.DateIn === '') {
-    console.log("DateIn");
     errors.DateIn = 'Tanggal harus diisi';
   } 
 
@@ -48,7 +47,7 @@ export const FormValidation = (values) => {
     errors.DateOut = 'Tanggal harus diisi';
   } 
 
-  if (!values.totalValue || values.totalValue === '') {
+  if (!values.totalValue || values.totalValue === ''  || values.totalValue <= 0) {
     errors.total = 'Pilih tanggal booking';
   } 
 

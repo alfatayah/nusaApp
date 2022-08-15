@@ -67,7 +67,7 @@ onLogout =  async () => {
  }
 
  componentDidUpdate = async prevProps => {
-  const {getProductError, getProductResult} = this.props;
+  const {getProductError, getProductResult, goHome} = this.props;
 
   if (getProductResult !== null && prevProps.getProductResult !== getProductResult) {
     let product =  getProductResult?.product ?? [];
@@ -77,6 +77,9 @@ onLogout =  async () => {
   if (getProductError !== null && prevProps.getProductError !== getProductError) {
    console.log("getProductError ", getProductError);
   }
+  if (getProductError !== null && prevProps.getProductError !== getProductError) {
+    console.log("getProductError ", getProductError);
+   }
 };
 
   tabRender = (arrProduct) => {
@@ -86,7 +89,9 @@ onLogout =  async () => {
         break;
 
       case 'booking':
-        return <Booking />
+        return <Booking 
+        goHome={() => this.setState({tabState : 'home'})}
+        />
 
       case 'report':
         return <Report />

@@ -14,12 +14,13 @@ export const Card = (
   status,
   image,
   onPress,
+  disabled,
   ) => {
   return (
     <TouchableOpacity
     key={id}
-      onPress={onPress}
-      
+    onPress={onPress}
+    disabled={disabled}
       style={{
         marginTop: '5%',
         alignSelf: 'center',
@@ -74,7 +75,7 @@ export const Card = (
                 height: hp(5),
                 borderRadius: 50,
                 marginRight: 10,
-                backgroundColor: '#6CC775',
+                backgroundColor: status === "Available" ? '#6CC775' : '#DC3545',
               }}>
               <Text
                 style={{

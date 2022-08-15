@@ -90,7 +90,7 @@ onLogout =  async () => {
 
       case 'booking':
         return <Booking 
-        goHome={() => this.setState({tabState : 'home'})}
+        goHome={() => this.showTabHome()}
         />
 
       case 'report':
@@ -102,6 +102,7 @@ onLogout =  async () => {
   }
 
   showTabHome = ( ) => {
+    this.props.getProduct();
     this.setState({ tabState: 'home' });
   }
   showTabBooking = ( ) => {
@@ -119,6 +120,7 @@ onLogout =  async () => {
         arrProduct?.image[0],
         () =>
           this.props.navigation.navigate('ProductDetail', {data: arrProduct}),
+        arrProduct.status === 'Available'  ? false : true,
       );
   }
   onFindProduct = (data, query) => {

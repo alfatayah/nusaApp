@@ -139,17 +139,27 @@ export class Booking extends Component {
   onSubmit = async (values) => {
     const {productData, totalPrice} = this.state;
     let arrayID = []; 
-    productData.forEach(element => {
-      arrayID.push(element.id);
-    });
-    this.props.booking({
-        dateIn: values.dateIn,
-        dateOut : values.dateOut, 
-        totalDays : values.totalValue,
-        product_id: arrayID,
-        totalBooking : totalPrice 
-    })
+    if(productData.length <= 0){
+      Alert.alert(
+        "",
+        "Please select product",
+        [
+          { text: "OK", onPress: () => {} },
+        ]
+      );
+    } else {
+      productData.forEach(element => {
+        arrayID.push(element.id);
+      });
+      this.props.booking({
+          dateIn: values.dateIn,
+          dateOut : values.dateOut, 
+          totalDays : values.totalValue,
+          product_id: arrayID,
+          totalBooking : totalPrice 
+      })
 
+    }    
   }
 
 
@@ -215,11 +225,17 @@ export class Booking extends Component {
               name={'totalValue'}
               component={renderFieldHidden}
             />
+             <Field
+              name={'listProduct'}
+              component={renderFieldHidden}
+            />
           </View>
         </View>
         <View style={{flexDirection: 'row' , justifyContent: 'space-between' ,marginTop: 15,}}>
+          
           <Text style={styles.title}>Your Options</Text>
-          <Text style={styles.totalCount}>{'( '+productData.length +' )'}</Text>
+          <Text style={styles.totalCount}>{'( '+ productData.length +' )'}</Text>
+         
         </View>
    
         {productData.map((data) => listItem(data, () => this.onClose(data)))}

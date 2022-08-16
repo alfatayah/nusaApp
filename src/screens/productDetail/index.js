@@ -54,11 +54,11 @@ export class ProductDetail extends Component {
       };
       let dataProduct = await this.checkData(productSaved);
       if (dataProduct != 1) {
-        Alert.alert('', 'Produk terpilih', [{text: 'OK'}]);
+        Alert.alert('', 'Produk terpilih', [{text: 'OK', onPress: () => this.props.navigation.goBack()}]);
         Alert;
         this.props.selectedProduct(productSaved, 1);
       } else {
-        Alert.alert('', 'Produk sudah terpilih', [{text: 'OK'}]);
+        Alert.alert('', 'Produk sudah terpilih', [{text: 'OK' , onPress: () => this.props.navigation.goBack()}]);
         Alert;
       }
     } catch (error) {

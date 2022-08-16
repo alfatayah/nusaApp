@@ -239,10 +239,6 @@ export class Booking extends Component {
         </View>
    
         {productData.map((data) => listItem(data, () => this.onClose(data)))}
-
-
-
-
       
       </ScrollView>
         <View

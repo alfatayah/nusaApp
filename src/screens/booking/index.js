@@ -45,7 +45,6 @@ export class Booking extends Component {
   }
 
   componentDidMount = async () => {
-    // BackHandler.addEventListener('hardwareBackPress', this.handleBacksButton);
   }
     componentDidUpdate = async (prevProps) => {
       const {dataProduct, bookingResult, bookingError} = this.props;
@@ -147,6 +146,7 @@ export class Booking extends Component {
 
   onSubmit = async (values) => {
     const {productData, totalPrice} = this.state;
+    const member_id = await AsyncStorage.getItem('member_id');
     let arrayID = []; 
     if(productData.length <= 0){
       Alert.alert(
@@ -161,6 +161,7 @@ export class Booking extends Component {
         arrayID.push(element.id);
       });
       this.props.booking({
+          member_id : member_id,
           dateBook: moment().format('DD-MM-YYYY'),
           dateIn: values.dateIn,
           dateOut : values.dateOut, 

@@ -67,20 +67,17 @@ onLogout =  async () => {
  }
 
  componentDidUpdate = async prevProps => {
-  const {getProductError, getProductResult, goHome} = this.props;
+    const {getProductError, getProductResult, goHome} = this.props;
 
-  if (getProductResult !== null && prevProps.getProductResult !== getProductResult) {
-    let product =  getProductResult?.product ?? [];
-    this.setState({arrProduct : product})
-  }
+    if (getProductResult !== null && prevProps.getProductResult !== getProductResult) {
+      let product =  getProductResult?.product ?? [];
+      this.setState({arrProduct : product})
+    }
 
-  if (getProductError !== null && prevProps.getProductError !== getProductError) {
-   console.log("getProductError ", getProductError);
-  }
-  if (getProductError !== null && prevProps.getProductError !== getProductError) {
+    if (getProductError !== null && prevProps.getProductError !== getProductError) {
     console.log("getProductError ", getProductError);
-   }
-};
+    }
+  };
 
   tabRender = (arrProduct) => {
     switch (this.state.tabState) {

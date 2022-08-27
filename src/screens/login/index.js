@@ -64,7 +64,8 @@ export class Login extends Component {
     if (loginResult !== null && prevProps.loginResult !== loginResult) {
       console.log
       await AsyncStorage.setItem('UserToken', loginResult.userToken);
-      await AsyncStorage.setItem('Name', loginResult.name); 
+      await AsyncStorage.setItem('Name', loginResult.name);
+      await AsyncStorage.setItem('member_id', loginResult.member_id);  
       setTimeout(() => {
         this.setState({ loadingSpinner: false });
         Alert.alert(

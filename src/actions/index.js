@@ -18,6 +18,10 @@ export const SELECTED_PRODUCT = 'SELECTED_PRODUCT';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const DELETE_ALL_PRODUCT = 'DELETE_ALL_PRODUCT';
 
+export const REPORT_PROCESS = 'REPORT_PROCESS';
+export const REPORT_SUCCESS = 'REPORT_SUCCESS';
+export const REPORT_ERROR = 'REPORT_ERROR';
+
 export function login(data) {
   return {
     type: LOGIN_PROCESS,
@@ -60,6 +64,13 @@ export function selectedProduct(data, flag) {
 export function booking(data) {
   return {
     type: BOOKING_PROCESS,
+    data: data,
+  };
+}
+
+export function getReport(data) {
+  return {
+    type: REPORT_PROCESS,
     data: data,
   };
 }

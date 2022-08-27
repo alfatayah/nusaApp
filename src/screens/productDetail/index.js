@@ -14,6 +14,7 @@ import {
 } from '../../components/index';
 import {selectedProduct} from '../../actions';
 import {formatCurrency} from '../../utils/utilization';
+import {URL} from '../../utils/constant';
 import {fonts} from '../../utils/fonts';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import {FormValidation} from '../../utils/FormValidation';
@@ -48,7 +49,7 @@ export class ProductDetail extends Component {
       const product = this.props.route.params.data;
       const productSaved = {
         id: product._id,
-        image: product.image[0],
+        image: URL+product.images[0],
         nameProduct: product.product_name,
         price: product.price,
       };
@@ -80,9 +81,9 @@ export class ProductDetail extends Component {
         {subHeader('', true, () => this.props.navigation.goBack())}
         <ImageSlider
           data={[
-            {img: product.image[0]},
-            {img: product.image[2]},
-            {img: product.image[1]},
+            {img: URL+product.images[0]},
+            {img: URL+product.images[2]},
+            {img: URL+ product.images[1]},
           ]}
           autoPlay={false}
           closeIconColor="#fff"

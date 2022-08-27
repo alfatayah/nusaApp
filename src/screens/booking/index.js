@@ -48,7 +48,7 @@ export class Booking extends Component {
     // BackHandler.addEventListener('hardwareBackPress', this.handleBacksButton);
   }
     componentDidUpdate = async (prevProps) => {
-      const {dataProduct, bookingResult} = this.props;
+      const {dataProduct, bookingResult, bookingError} = this.props;
       // loginResult !== null && prevProps.loginResult !== loginResult
       if (prevProps.dataProduct !== dataProduct) {
         this.setState({
@@ -66,12 +66,20 @@ export class Booking extends Component {
               { text: "OK", onPress:  this.props.goHome },
             ]
           );
-  
           Alert
         }, 500);
-      
       }
 
+      if (bookingError !== null && prevProps.bookingError !== bookingError) {
+        Alert.alert(
+          "",
+          bookingError.message,
+          [
+            { text: "OK", onPress:  this.props.goHome },
+          ]
+        );
+        Alert
+      }
     };
 
   openDatePicker = () => {
@@ -116,6 +124,7 @@ export class Booking extends Component {
 
   onChangeDateSecond = (newDate) => {
     const date = moment(newDate).format('DD-MM-YYYY');
+    console.log("date now" ,  moment().format('DD-MM-YYYY'))
     this.props.updateField('formBooking', 'dateOut', date);
     this.setState({ DateOut: date, visibleSecond: false,  });
     this.calculateDate();
@@ -152,11 +161,14 @@ export class Booking extends Component {
         arrayID.push(element.id);
       });
       this.props.booking({
+          dateBook: moment().format('DD-MM-YYYY'),
           dateIn: values.dateIn,
           dateOut : values.dateOut, 
           totalDays : values.totalValue,
           product_id: arrayID,
-          totalBooking : totalPrice 
+          totalBooking : totalPrice,
+          status: 'PENDING',
+          description: "Sebentar ya data kamu akan segera di proses" 
       })
 
     }    

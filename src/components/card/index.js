@@ -7,6 +7,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {URL} from '../../utils/constant';
 export const Card = (
   id,
   title,
@@ -33,7 +34,7 @@ export const Card = (
       <Image
         style={{width: '99%', height: hp(30), alignSelf: 'center'}}
         source={{
-          uri: image,
+          uri: URL + image,
         }}
       />
       <View

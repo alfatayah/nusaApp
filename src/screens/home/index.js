@@ -117,7 +117,7 @@ onLogout =  async () => {
         arrProduct.product_name,
         arrProduct?.price ?? 0,
         arrProduct.status,
-        arrProduct?.image[0],
+        arrProduct?.images[0],
         () =>
           this.props.navigation.navigate('ProductDetail', {data: arrProduct}),
         arrProduct.status === 'Available'  ? false : true,

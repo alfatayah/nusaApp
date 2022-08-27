@@ -4,7 +4,9 @@ export const BAF_COLOR_YELLOW = '#F8AF34';
 export const BORDER_COLOR = '#A6AAB4';
 export const BG_COLOR = '#05B6D3';
 //NOTE: API nya masih local jadi nanti ketika pindah network api address nya harus di ganti
-export const API_NUSA = 'http://192.168.1.5:3000/api/v1/';
+export const URL = 'http://192.168.1.8:3001/';
+export const API_NUSA = URL + 'api/v1/';
+
 export async function filterFetch(url, options) {
   try {
     return await fetch(url, options)

@@ -8,7 +8,7 @@ import {
 
 export default StyleSheet.create({
 textDetail:{
-  fontSize: 14, color: '#143656', fontFamily: fonts.rubik.regular
+  fontSize: 12, color: '#143656', fontFamily: fonts.rubik.regular
 },
   text: {
     fontSize: Platform.OS == 'ios' ? getScaleIos(14) : RFValue(14),

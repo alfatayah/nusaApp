@@ -62,7 +62,7 @@ export class Report extends Component {
       }}>
       <View style={{width: '45%'}}>
         <Text style={styles.textDetail}>Book ID: B{value._id.slice(0,4)}</Text>
-        <Text style={styles.textDetail} >Item : {value.product_id}</Text>
+        <Text style={styles.textDetail} >Item : {Object.keys(value.product_id).map(r => value.product_id[r].product_name) }</Text>
       </View>
 
       <View style={{width: '45%'}}>
